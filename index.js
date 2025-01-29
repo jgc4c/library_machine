@@ -3,9 +3,9 @@ var mysql = require('mysql2');
 
 var con = mysql.createConnection({ // creates the connection to your database
 	host: "localhost", // IP address of where the database is, localhost if you're doing it locally
-	user: "geeb", // database user account you want to use. make sure it's a user 
-	password: "pingu", // password for database user account
-	database: "testing" // name of database to connect to
+	user: "", // database user account you want to use. make sure it's a user 
+	password: "", // password for database user account
+	database: "" // name of database to connect to
 });
 
 con.connect(function(err) {
