@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Library Machine (In-Dev)</title>
+        <link href="./style.css" type="text/css" rel="stylesheet">
+    </head>
+    <body>
+        <!--Add content blocks if needed-->
+        <h1 id="heading">Welcome to the Library Machine!</h1>
+        <p>Input your log-in information on the bottom.</p>
+        <p>Make sure to check the right button to confirm what kind of user you are logging in as.</p>
+
+        <form>
+            <p>Logging in as:</p>
+            <input type="radio" id="visitor" name="user_Schema" value="Visitor">
+            <label for="visitor">Visitor</label><br>
+            <input type="radio" id="librarian" name="user_Schema" value="Librarian">
+            <label for="librarian">Librarian</label><br>
+            <input type="radio" id="administrator" name="user_Schema" value="Administrator">
+            <label for="administrator">Administrator</label><br>
+
+            <p>Enter your Library account information here:</p><br>
+            <label for="id">User ID:</label>
+            <input type="text" id="id" name="id"><br><br>
+            <label for="pass">Password:</label>
+            <input type="text" id="pass" name="pass"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>
