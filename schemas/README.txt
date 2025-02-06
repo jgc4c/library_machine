@@ -1,0 +1,1 @@
+Basic version of what our schema should look like, modify if needed
