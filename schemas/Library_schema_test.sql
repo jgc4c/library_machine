@@ -2,12 +2,9 @@
 project schema currently. No SQL commands here would be final */
 
 /* Any username and password related fields will have type of VARCHAR(30) */
-DROP TABLE IF EXISTS Loaner_list;
-DROP TABLE IF EXISTS Request_list;
-DROP TABLE IF EXISTS Book;
-DROP TABLE IF EXISTS Administrator;
-DROP TABLE IF EXISTS Librarian;
-DROP TABLE IF EXISTS Visitor;
+DROP DATABASE IF EXISTS library_machine;
+CREATE DATABASE library_machine;
+USE library_machine;
 
 /* 
 ISBN numbers have a fixed length of 13 digits including dashes (for books issued after 1970s?)

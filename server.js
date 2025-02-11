@@ -5,7 +5,15 @@ var mysql = require('mysql2');
 const app = express();
 const port = 8080;
 
+var con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "pingu",
+    database: "library_machine"
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('pages'));
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/pages/index.html'));
@@ -16,8 +24,18 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login-check', (req, res) => {
-    // res.send(`User-type Selection is: ${req.body.user_Schema}\n ID is: ${req.body.id}\n Password is: ${req.body.pass}`);
+    con.connect(function(err) {
+        if (err) throw err;
 
+        switch(req.body.user_Schema) {
+            case "Visitor":
+                break;
+            case "Librarian":
+                break;
+            case "Admin":
+                break;
+        }
+    });
 });
 
 app.listen(port, () => {
