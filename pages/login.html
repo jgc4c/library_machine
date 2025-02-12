@@ -19,20 +19,20 @@
         </div>
         
         <div class="w3-container" id="login-form">
-            <form action="http://localhost:8080/login-check" method="POST">
+            <form action="http://localhost:3000/login-check" method="POST">
                 <p>Logging in as:</p>
-                <input type="radio" id="visitor" name="user_Schema" value="Visitor">
+                <input type="radio" id="visitor" name="user_type" value="Visitor">
                 <label for="visitor">Visitor</label><br>
-                <input type="radio" id="librarian" name="user_Schema" value="Librarian">
+                <input type="radio" id="librarian" name="user_type" value="Librarian">
                 <label for="librarian">Librarian</label><br>
-                <input type="radio" id="admin" name="user_Schema" value="Admin">
+                <input type="radio" id="admin" name="user_type" value="Admin">
                 <label for="admin">Admin</label><br>
     
                 <p>Enter your Library account information here:</p><br>
-                <label for="id">User ID:</label>
-                <input type="text" id="id" name="id"><br><br>
-                <label for="pass">Password:</label>
-                <input type="text" id="pass" name="pass"><br><br>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username"><br><br>
+                <label for="password">Password:</label>
+                <input type="text" id="password" name="password"><br><br>
                 <input type="submit" value="Submit">
             </form>
         </div>

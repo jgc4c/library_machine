@@ -13,7 +13,7 @@ Author name and Genre might possibly be anonymous/unknown, adjust length of Auth
 Num_pages might be unknown (aka null) but count associates to total number of that book's copy in the library
 Currently refraining with adding Cover column */
 CREATE TABLE Book(
-	ISBN	  CHAR(20)		NOT NULL UNIQUE,
+	ISBN	  CHAR(20)		NOT NULL AUTO_INCREMENT,
     Book_name VARCHAR(255)   NOT NULL,
     Author	  VARCHAR(40),
     Genre	  VARCHAR(40),
@@ -22,8 +22,8 @@ CREATE TABLE Book(
     PRIMARY KEY(ISBN)
 );
 
-CREATE TABLE Administrator(
-	Admin_id	INT				NOT NULL UNIQUE,
+CREATE TABLE Admin(
+	Admin_id	INT				NOT NULL AUTO_INCREMENT,
     Admin_user	VARCHAR(30)		NOT NULL,
     Admin_pass	VARCHAR(30)		NOT NULL,
     First_name	VARCHAR(15)		NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE Administrator(
 );
 
 CREATE TABLE Librarian(
-	Librarian_id	INT				NOT NULL UNIQUE,
+	Librarian_id	INT				NOT NULL AUTO_INCREMENT,
     Librarian_user	VARCHAR(30)		NOT NULL,
     Librarian_pass	VARCHAR(30)		NOT NULL,
     First_name		VARCHAR(15)		NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE Librarian(
 );
 
 CREATE TABLE Visitor(
-	Visitor_id		INT				NOT NULL UNIQUE,
+	Visitor_id		INT				NOT NULL AUTO_INCREMENT,
     Visitor_user	VARCHAR(30)		NOT NULL,
     Visitor_pass	VARCHAR(30)		NOT NULL,
     First_name		VARCHAR(15)		NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE Visitor(
 
 /* Assumed Approved_by == Librarian_id, not username */
 CREATE TABLE Loaner_list(
-	Loan_id 	INT 		  NOT NULL UNIQUE,
+	Loan_id 	INT 		  NOT NULL AUTO_INCREMENT,
     ISBN 		CHAR(20)	  NOT NULL,
     Book_name 	VARCHAR(45)   NOT NULL,
     Borrower_id INT			  NOT NULL,
@@ -68,7 +68,7 @@ CREATE TABLE Loaner_list(
 );
 
 CREATE TABLE Request_list(
-	Request_id		INT 		  NOT NULL UNIQUE,
+	Request_id		INT 		  NOT NULL AUTO_INCREMENT,
     ISBN 			CHAR(20)	  NOT NULL,
 	Book_name 		VARCHAR(45)   NOT NULL,
     Requester_id 	INT		  	  NOT NULL,
@@ -80,10 +80,8 @@ CREATE TABLE Request_list(
 );
 -- Insertion test
 INSERT INTO Book (ISBN, Book_name, Author, Genre, Num_pages, Count) VALUES 
-('978-0345391803', 'The Hitchhiker\'s Guide to the Galaxy', 'Douglas Adams', 'Science Fiction', 224, 1);
+("978-0345391803", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Science Fiction", 224, 1);
 
-INSERT INTO Book
-VALUES ('123-4567890123', 'Test test', null, null, 255, 1000);
+INSERT INTO Book VALUES ("123-4567890123", "Test test", null, null, 255, 1000);
 
-INSERT INTO Loaner_List
-VALUES (123, '123-4567890123', "Test", 456, "test", 789, DEFAULT,'2008-11-11');
+INSERT INTO Loaner_List VALUES (123, "123-4567890123", "Test", 456, "test", 789, DEFAULT,"2008-11-11");
