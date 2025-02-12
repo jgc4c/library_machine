@@ -21,7 +21,7 @@
         <div class="w3-container" id="login-form">
             <form action="http://localhost:3000/login-check" method="POST">
                 <p>Logging in as:</p>
-                <input type="radio" id="visitor" name="user_type" value="Visitor">
+                <input type="radio" id="visitor" name="user_type" value="Visitor" checked>
                 <label for="visitor">Visitor</label><br>
                 <input type="radio" id="librarian" name="user_type" value="Librarian">
                 <label for="librarian">Librarian</label><br>
@@ -32,7 +32,7 @@
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username"><br><br>
                 <label for="password">Password:</label>
-                <input type="text" id="password" name="password"><br><br>
+                <input type="password" id="password" name="password"><br><br>
                 <input type="submit" value="Submit">
             </form>
         </div>

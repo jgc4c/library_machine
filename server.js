@@ -113,6 +113,8 @@ app.post('/login-check', (req, res) => {
                     }
                 });
                 break;
+            default:
+                res.redirect("/logout");
         }
         
     });
@@ -141,7 +143,7 @@ app.get('/dashboards/admin', (req, res) => {
 });
 
 app.get('/dashboards/librarian', (req, res) => {
-    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "lib") {
+    if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome librarian");
         res.sendFile(path.join(__dirname, '/pages/dashboards/librarian.html'));
     }
@@ -152,7 +154,7 @@ app.get('/dashboards/librarian', (req, res) => {
 });
 
 app.get('/dashboards/visitor', (req, res) => {
-    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "vis") {
+    if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "vis" || req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome visitor");
         res.sendFile(path.join(__dirname, '/pages/dashboards/visitor.html'));
     }
@@ -164,5 +166,5 @@ app.get('/dashboards/visitor', (req, res) => {
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
-    console.log(`Access site at localhost:${port}`);
+    console.log(`Access site at [ localhost:${port} ]`);
 });
