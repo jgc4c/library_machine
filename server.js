@@ -20,6 +20,7 @@ app.use(
         secret: 'secret-key',
         resave: false,
         saveUninitialized: false,
+        cookie: { maxAge: 1000*60*5 }
     })
 );
 
@@ -36,63 +37,132 @@ app.post('/login-check', (req, res) => {
 
     con.connect(function(err) {
         if (err) throw err;
-        con.query(`SELECT admin_user, admin_pass FROM ${user_type}`, function (err, result, fields) {
-            if (err) throw err;
-            // console.log(result);
-            let valid = false;
-            for (var i = 0; i < result.length; i++) {
-                if (username == result[i].Admin_user && password == result[i].Admin_pass) {
-                    valid = true;
-                }
-            }
-            
-            if ( valid ) {
-                console.log("login success");
-                req.session.isLoggedIn = true;
-                req.session.username = username;
-
-                res.redirect(`/dashboards/${user_type.toLowerCase()}`);
-            }
-            else {
-                console.log("login failed");
-                res.redirect("/login");
-            }
-        });
+        switch (user_type) {
+            case "Visitor":
+                con.query(`SELECT Visitor_user, Visitor_pass FROM Visitor`, function (err, result, fields) {
+                    if (err) throw err;
+                    // console.log(result);
+                    let valid = false;
+                    for (var i = 0; i < result.length; i++) {
+                        if (username == result[i].Visitor_user && password == result[i].Visitor_pass) {
+                            valid = true;
+                            break;
+                        }
+                    }
+                    
+                    if ( valid ) {
+                        console.log("login success for visitor");
+                        req.session.isLoggedIn = true;
+                        req.session.username = "vis_" + username;
+        
+                        res.redirect(`/dashboards/${user_type.toLowerCase()}`);
+                    }
+                    else {
+                        console.log("login failed for visitor");
+                        res.redirect("/logout");
+                    }
+                });
+                break;
+            case "Librarian":
+                con.query(`SELECT Librarian_user, Librarian_pass FROM Librarian`, function (err, result, fields) {
+                    if (err) throw err;
+                    // console.log(result);
+                    let valid = false;
+                    for (var i = 0; i < result.length; i++) {
+                        if (username == result[i].Librarian_user && password == result[i].Librarian_pass) {
+                            valid = true;
+                            break;
+                        }
+                    }
+                    
+                    if ( valid ) {
+                        console.log("login success for librarian");
+                        req.session.isLoggedIn = true;
+                        req.session.username = "lib_" + username;
+        
+                        res.redirect(`/dashboards/${user_type.toLowerCase()}`);
+                    }
+                    else {
+                        console.log("login failed for librarian");
+                        res.redirect("/logout");
+                    }
+                });
+                break;
+            case "Admin":
+                con.query(`SELECT Admin_user, Admin_pass FROM Admin`, function (err, result, fields) {
+                    if (err) throw err;
+                    // console.log(result);
+                    let valid = false;
+                    for (var i = 0; i < result.length; i++) {
+                        if (username == result[i].Admin_user && password == result[i].Admin_pass) {
+                            valid = true;
+                            break;
+                        }
+                    }
+                    
+                    if ( valid ) {
+                        console.log("login success for admin");
+                        req.session.isLoggedIn = true;
+                        req.session.username = "adm_" + username;
+        
+                        res.redirect(`/dashboards/${user_type.toLowerCase()}`);
+                    }
+                    else {
+                        console.log("login failed for admin");
+                        res.redirect("/logout");
+                    }
+                });
+                break;
+        }
+        
     });
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy( (err) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            res.redirect("/login");
+        }
+    })
+});
+
 app.get('/dashboards/admin', (req, res) => {
-    res.sendFile(path.join(__dirname, '/pages/dashboards/admin.html'));
+    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "adm") {
+        console.log("welcome admin");
+        res.sendFile(path.join(__dirname, '/pages/dashboards/admin.html'));
+    }
+    else {
+        console.log("Not logged in as admin");
+        res.redirect("/login");
+    }
 });
 
 app.get('/dashboards/librarian', (req, res) => {
-    res.sendFile(path.join(__dirname, '/pages/dashboards/librarian.html'));
+    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "lib") {
+        console.log("welcome librarian");
+        res.sendFile(path.join(__dirname, '/pages/dashboards/librarian.html'));
+    }
+    else {
+        console.log("Not logged in as librarian");
+        res.redirect("/login");
+    }
 });
 
 app.get('/dashboards/visitor', (req, res) => {
-    res.sendFile(path.join(__dirname, '/pages/dashboards/visitor.html'));
+    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "vis") {
+        console.log("welcome visitor");
+        res.sendFile(path.join(__dirname, '/pages/dashboards/visitor.html'));
+    }
+    else {
+        console.log("Not logged in as visitor");
+        res.redirect("/login");
+    }
 });
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`Access site at localhost:${port}`);
 });
-
-function isValidUser(user_type, username, password) {
-    var valid = false;
-    con.connect(function(err) {
-        if (err) throw err;
-        con.query(`SELECT admin_user, admin_pass FROM ${user_type}`, function (err, result, fields) {
-            if (err) throw err;
-            // console.log(result);
-
-            for (var i = 0; i < result.length; i++) {
-                if (username == result[i].admin_user) {
-                    valid = true;
-                }
-            }
-        });
-    });
-
-    return valid;
-};

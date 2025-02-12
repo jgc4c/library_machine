@@ -13,7 +13,7 @@ Author name and Genre might possibly be anonymous/unknown, adjust length of Auth
 Num_pages might be unknown (aka null) but count associates to total number of that book's copy in the library
 Currently refraining with adding Cover column */
 CREATE TABLE Book(
-	ISBN	  CHAR(20)		NOT NULL AUTO_INCREMENT,
+	ISBN	  CHAR(20)		NOT NULL,
     Book_name VARCHAR(255)   NOT NULL,
     Author	  VARCHAR(40),
     Genre	  VARCHAR(40),
@@ -82,6 +82,18 @@ CREATE TABLE Request_list(
 INSERT INTO Book (ISBN, Book_name, Author, Genre, Num_pages, Count) VALUES 
 ("978-0345391803", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Science Fiction", 224, 1);
 
-INSERT INTO Book VALUES ("123-4567890123", "Test test", null, null, 255, 1000);
+INSERT INTO Book 
+VALUES ("123-4567890123", "Test test", null, null, 255, 1000);
 
-INSERT INTO Loaner_List VALUES (123, "123-4567890123", "Test", 456, "test", 789, DEFAULT,"2008-11-11");
+INSERT INTO Loaner_list 
+VALUES (123, "123-4567890123", "Test", 456, "test", 789, DEFAULT,"2008-11-11");
+
+INSERT INTO Admin (Admin_user, Admin_pass, First_name, Last_name) 
+VALUES ("admin", "admin", "Test", "Admin");
+
+INSERT INTO Librarian (Librarian_user, Librarian_pass, First_name, Last_name) 
+VALUES ("librarian", "librarian", "Test", "Librarian");
+
+INSERT INTO Visitor (Visitor_user, Visitor_pass, First_name, Last_name) 
+VALUES ("visitor", "visitor", "Test", "Visitor");
+
