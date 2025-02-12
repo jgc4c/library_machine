@@ -59,12 +59,12 @@ CREATE TABLE Loaner_list(
     Borrower_id INT			  NOT NULL,
     Borrow_name	VARCHAR(30)	  NOT NULL,
     Approved_by INT			  NOT NULL,
-    Loan_Date 	DATE		  DEFAULT (CURRENT_DATE),
-    Due_Date 	DATE		  NOT NULL,
+    Loan_Date 	DATETIME	  DEFAULT current_timestamp,
+    Due_Date 	DATETIME	  NOT NULL,
     PRIMARY KEY(Loan_id),
-    FOREIGN KEY(ISBN) REFERENCES Book(ISBN),
-    FOREIGN KEY(Borrower_id) REFERENCES Visitor(Visitor_id),
-    FOREIGN KEY(Approved_by) REFERENCES Librarian(Librarian_id)
+    FOREIGN KEY(ISBN) REFERENCES Book(ISBN)
+   # FOREIGN KEY(Borrower_id) REFERENCES Visitor(Visitor_id),
+    #FOREIGN KEY(Approved_by) REFERENCES Librarian(Librarian_id)
 );
 
 CREATE TABLE Request_list(
@@ -73,7 +73,7 @@ CREATE TABLE Request_list(
 	Book_name 		VARCHAR(45)   NOT NULL,
     Requester_id 	INT		  	  NOT NULL,
     Requester_name	VARCHAR(30)	  NOT NULL,
-    Request_Date 	DATE		  DEFAULT (CURRENT_DATE),
+    Request_Date 	DATETIME	  DEFAULT current_timestamp,
     PRIMARY KEY(Request_id),
     FOREIGN KEY(ISBN) REFERENCES Book(ISBN),
     FOREIGN KEY(Requester_id) REFERENCES Visitor(Visitor_id)
@@ -84,3 +84,6 @@ INSERT INTO Book (ISBN, Book_name, Author, Genre, Num_pages, Count) VALUES
 
 INSERT INTO Book
 VALUES ('123-4567890123', 'Test test', null, null, 255, 1000);
+
+INSERT INTO Loaner_List
+VALUES (123, '123-4567890123', "Test", 456, "test", 789, DEFAULT,'2008-11-11');
