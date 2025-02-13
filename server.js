@@ -6,6 +6,8 @@ var mysql = require('mysql2');
 const app = express();
 const port = 3000;
 
+
+
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
@@ -20,7 +22,9 @@ app.use(
         secret: 'secret-key',
         resave: false,
         saveUninitialized: false,
-        cookie: { maxAge: 1000*60*5 }
+        cookie: { 
+            maxAge: 1000*60*5
+        }
     })
 );
 

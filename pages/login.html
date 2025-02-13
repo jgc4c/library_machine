@@ -12,14 +12,14 @@
             <a href="/login" class="w3-bar-item w3-button w3-light-grey w3-mobile">Login</a>
         </div> 
         
-        <div class="w3-container" id="login-header">
+        <div class="w3-container w3-mobile" id="login-header">
             <h1 id="heading">Welcome to the Library Machine!</h1>
             <p>Input your log-in information on the bottom.</p>
             <p>Make sure to check the right button to confirm what kind of user you are logging in as.</p>    
         </div>
         
-        <div class="w3-container" id="login-form">
-            <form action="http://localhost:3000/login-check" method="POST">
+        <div class="w3-container w3-mobile" id="login-form">
+            <form action="/login-check" method="POST">
                 <p>Logging in as:</p>
                 <input type="radio" id="visitor" name="user_type" value="Visitor" checked>
                 <label for="visitor">Visitor</label><br>
