@@ -69,7 +69,7 @@ app.post('/login-check', (req, res) => {
                     // console.log(result);
                     let valid = false;
                     for (var i = 0; i < result.length; i++) {
-                        if (username == result[i].Librarian_user && password == result[i].Librarian_pass) {
+                        if (username == result[i].Librarian_user && password == result[i].Librarian_pass) {``
                             valid = true;
                             break;
                         }
@@ -116,7 +116,6 @@ app.post('/login-check', (req, res) => {
             default:
                 res.redirect("/logout");
         }
-        
     });
 });
 
