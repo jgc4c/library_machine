@@ -167,6 +167,21 @@ app.get('/dashboards/visitor', (req, res) => {
     }
 });
 
+app.get('/display', (req, res) => {
+    con.connect();  
+
+    con.query('SELECT * FROM users', function(err, result, fields)   
+    {  
+        con.end();
+  
+        if (err) throw err;
+        console.log("Checking");  
+        console.log(result);
+        res.json(result); 
+  
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`Access site at [ localhost:${port} ]`);

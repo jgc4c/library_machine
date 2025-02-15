@@ -4,8 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitor Dashboard</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <h1>Visitor Dashboard</h1>
+    <div class="w3-bar">
+        <a href="/" class="w3-bar-item w3-button w3-mobile">Home</a>
+        <a href="/login" class="w3-bar-item w3-button w3-light-grey w3-mobile">Login</a>
+    </div> 
+    <div class="w3-container w3-mobile" id="visitor-header">
+        <h1 id="heading">Welcome, visitor!</h1>  
+    </div>
+    <table id = "results-table">
+        <tr>
+            <th>ISBN</th>
+            <th>Book Name</th>
+            <th>Author</th>
+            <th>Genre</th>
+            <th>Number of Pages</th>
+            <th>Count</th>
+        </tr>
+        <tr>
+        <script type="text/javascript">
+            var opts = {
+                url: 'http://localhost:3000/display/'
+            };
+
+            fetch(opts)
+                .then((res) => {
+                    if (res.ok) {
+                        return res.json();
+                    }
+                 })
+                 .then((result) => {
+                     for (let result of results) {
+                         
+                     }
+                  })
+                  .catch(console.log);
+        
+       </script>
+       </tr>
+    </table>
+
 </body>
 </html>
