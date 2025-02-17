@@ -6,7 +6,7 @@ var mysql = require('mysql2');
 const app = express();
 const port = 3000;
 
-
+//differing user and password, need to change this per import from git (SC: {user:root,password:rootbeer} )
 var con = mysql.createConnection({
     host: "localhost",
     user: "admin",
@@ -166,7 +166,8 @@ app.get('/dashboards/visitor', (req, res) => {
     }
 });
 
-app.get('/display', (req, res) => {
+//Functionalities for visitor dashboard goes here
+app.get('/book-display-all', (req, res) => {
     con.connect((err) => {
         if (err) throw err;
         con.query(`SELECT * FROM Book`, (err, results, fields) => {
@@ -174,6 +175,30 @@ app.get('/display', (req, res) => {
             res.json(results);
         })
     });  
+});
+
+app.get('/search-specific', (req, res) => {
+    const { book_search, book_input } = req.body;
+
+    con.connect((err) => {
+        if (err) throw err;
+        switch (book_search) {
+            case "ISBN":
+                con.query(`SELECT * FROM Book WHERE ISBN = ` + book_input, (err, result, fields) => {
+                    if (err) throw err;
+                    console.log("HELLO ISBN");
+                    console.log(result[0]);
+                });
+                break;
+            case "Book_name":
+                break;
+            case "Author":
+                break;
+            case "Genre":
+                break;
+        }
+    });
+
 });
 
 app.listen(port, () => {
