@@ -7,10 +7,9 @@ const app = express();
 const port = 3000;
 
 
-
 var con = mysql.createConnection({
     host: "localhost",
-    user: "root",
+    user: "admin",
     password: "pingu",
     database: "library_machine"
 });
@@ -168,18 +167,13 @@ app.get('/dashboards/visitor', (req, res) => {
 });
 
 app.get('/display', (req, res) => {
-    con.connect();  
-
-    con.query('SELECT * FROM users', function(err, result, fields)   
-    {  
-        con.end();
-  
+    con.connect((err) => {
         if (err) throw err;
-        console.log("Checking");  
-        console.log(result);
-        res.json(result); 
-  
-    });
+        con.query(`SELECT * FROM Book`, (err, results, fields) => {
+            if (err) throw err;
+            res.json(results);
+        })
+    });  
 });
 
 app.listen(port, () => {
