@@ -9,7 +9,7 @@ const port = 3000;
 //differing user and password, need to change this per import from git (SC: {user:root,password:rootbeer} )
 var con = mysql.createConnection({
     host: "localhost",
-    user: "admin",
+    user: "root",
     password: "pingu",
     database: "library_machine"
 });
@@ -177,17 +177,21 @@ app.get('/book-display-all', (req, res) => {
     });  
 });
 
-app.get('/search-specific', (req, res) => {
-    const { book_search, book_input } = req.body;
+app.post('/search-specific', (req, res) => {
+    let book_search = req.body.book_search;
+    let book_input = req.body.book_input;
+    console.log(book_search);
+    console.log(book_input);
 
     con.connect((err) => {
         if (err) throw err;
         switch (book_search) {
             case "ISBN":
-                con.query(`SELECT * FROM Book WHERE ISBN = ` + book_input, (err, result, fields) => {
+                console.log("HELLO ISBN");
+                con.query('SELECT * FROM Book WHERE ISBN ="' + book_input +'"', (err, result, fields) => {
                     if (err) throw err;
-                    console.log("HELLO ISBN");
-                    console.log(result[0]);
+                    //console.log(result[0]);
+                    res.json(result);
                 });
                 break;
             case "Book_name":

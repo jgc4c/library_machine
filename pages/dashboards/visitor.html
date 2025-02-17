@@ -22,14 +22,14 @@
         <button class="tablinks" onclick="optionTab(event, 'request')">Request a Book</button>
     </div>
     <!-- Tab content -->
-    <div id="show-all" class="tabcontent">
+    <div id="show-all" class="tabcontent w3-container w3-mobile">
         <p>Press below to show all books available in the library:</p>
         <button onclick="getData()">Show All</button>
     </div>
   
-    <div id="show-specific" class="tabcontent">
+    <div id="show-specific" class="tabcontent w3-container w3-mobile">
         <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p>
-        <form action="/search-specific" method="GET">
+        <form action="/search-specific" method="POST">
             <p>Searching for:</p>
             <input type="radio" id="ISBN" name="book_search" value="ISBN" checked>
             <label for="ISBN">ISBN</label><br>
@@ -47,7 +47,7 @@
         </form>
     </div>
   
-    <div id="request" class="tabcontent">
+    <div id="request" class="tabcontent w3-container w3-mobile">
     </div>
 
     <table id="output-table" border = "1"></table>
@@ -60,7 +60,6 @@
                 displayData(data);
             });
         }
-
         function displayData(data) {
             let output =  document.getElementById("output-table");
             //reset innerHTML on each button press,
