@@ -15,7 +15,7 @@ Currently refraining with adding Cover column */
 CREATE TABLE Book(
 	ISBN	  CHAR(20)		NOT NULL,
     Book_name VARCHAR(255)   NOT NULL,
-    Author	  VARCHAR(40),
+    Author	  VARCHAR(255),
     Genre	  VARCHAR(40),
     Num_pages INT,
     Count	  INT 			NOT NULL,

@@ -9,10 +9,31 @@ const port = 3000;
 //differing user and password, need to change this per import from git (SC: {user:root,password:rootbeer} )
 var con = mysql.createConnection({
     host: "localhost",
-    user: "root",
+    user: "admin",
     password: "pingu",
     database: "library_machine"
 });
+
+function getRandomInt(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
+}
+
+console.log("loading data into database...");
+con.connect( (err) => {
+    if (err) throw err;
+    const books = require("./data/books.json");
+
+    for (let i = 0; i < books.length; i++) {
+        con.query(`INSERT INTO Book (ISBN, Book_name, Author, Num_pages, Count) VALUES ("${books[i].isbn13.toString()}", "${books[i].title}", "${books[i].authors}", ${books[i].num_pages}, ${getRandomInt(1,5)})`, (err, result) => {
+            // if (err) throw err;
+            // console.log("book added");
+        });
+    }
+})
+console.log("data loaded!");
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('pages'));
