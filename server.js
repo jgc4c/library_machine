@@ -3,6 +3,7 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const path = require('path');
 var mysql = require('mysql2');
+const fs = require("fs");
 const app = express();
 const port = 3000;
 
@@ -19,6 +20,16 @@ function getRandomInt(min, max) {
     const maxFloored = Math.floor(max);
     return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled);
 }
+
+/*
+const sqlScript = fs.readFileSync('./schemas/Library_schema_test.sql', 'utf8');
+con.connect( (err) => {
+    if (err) throw err;
+    con.query(sqlScript, (err, result) => {
+        console.log("success");
+    })
+})
+*/
 
 console.log("loading data into database...");
 con.connect( (err) => {

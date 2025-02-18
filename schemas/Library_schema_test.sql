@@ -78,15 +78,6 @@ CREATE TABLE Request_list(
     FOREIGN KEY(ISBN) REFERENCES Book(ISBN),
     FOREIGN KEY(Requester_id) REFERENCES Visitor(Visitor_id)
 );
--- Insertion test
-INSERT INTO Book (ISBN, Book_name, Author, Genre, Num_pages, Count) VALUES 
-("978-0345391803", "The Hitchhiker's Guide to the Galaxy", "Douglas Adams", "Science Fiction", 224, 1);
-
-INSERT INTO Book 
-VALUES ("123-4567890123", "Test test", null, null, 255, 1000);
-
-INSERT INTO Loaner_list 
-VALUES (123, "123-4567890123", "Test", 456, "test", 789, DEFAULT,"2008-11-11");
 
 INSERT INTO Admin (Admin_user, Admin_pass, First_name, Last_name) 
 VALUES ("admin", "admin", "Test", "Admin");
