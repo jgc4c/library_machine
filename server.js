@@ -29,15 +29,15 @@ app.use(
     })
 );
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '/pages/index.html'));
+app.get('/', (req, res) => { // default route for getting homepage
+    res.sendFile(path.join(__dirname, '/pages'));
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', (req, res) => { // route for login page
     res.sendFile(path.join(__dirname, '/pages/login.html'));
 });
 
-app.post('/login-check', (req, res) => {
+app.post('/login-check', (req, res) => { // post request for checking login credentials 
     const { user_type, username, password } = req.body;
 
     con.connect(function(err) {
@@ -124,7 +124,7 @@ app.post('/login-check', (req, res) => {
     });
 });
 
-app.get('/logout', (req, res) => {
+app.get('/logout', (req, res) => { // route for logging out, deletes user sessions
     req.session.destroy( (err) => {
         if (err) {
             console.log(err);
@@ -135,7 +135,7 @@ app.get('/logout', (req, res) => {
     })
 });
 
-app.get('/dashboards/admin', (req, res) => {
+app.get('/dashboards/admin', (req, res) => { // routing for getting to admin dashboard
     if (req.session.isLoggedIn && req.session.username.substring(0,3) == "adm") {
         console.log("welcome admin");
         res.sendFile(path.join(__dirname, '/pages/dashboards/admin'));
@@ -146,7 +146,7 @@ app.get('/dashboards/admin', (req, res) => {
     }
 });
 
-app.get('/dashboards/librarian', (req, res) => {
+app.get('/dashboards/librarian', (req, res) => { // routing for getting to librarian dashboard
     if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome librarian");
         res.sendFile(path.join(__dirname, '/pages/dashboards/librarian'));
@@ -157,7 +157,7 @@ app.get('/dashboards/librarian', (req, res) => {
     }
 });
 
-app.get('/dashboards/visitor', (req, res) => {
+app.get('/dashboards/visitor', (req, res) => { // routing for getting to visitor dashboard
     if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "vis" || req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome visitor");
         res.sendFile(path.join(__dirname, '/pages/dashboards/visitor'));
