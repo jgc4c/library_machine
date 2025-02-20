@@ -138,7 +138,7 @@ app.get('/logout', (req, res) => {
 app.get('/dashboards/admin', (req, res) => {
     if (req.session.isLoggedIn && req.session.username.substring(0,3) == "adm") {
         console.log("welcome admin");
-        res.sendFile(path.join(__dirname, '/pages/dashboards/admin.html'));
+        res.sendFile(path.join(__dirname, '/pages/dashboards/admin'));
     }
     else {
         console.log("Not logged in as admin");
@@ -149,7 +149,7 @@ app.get('/dashboards/admin', (req, res) => {
 app.get('/dashboards/librarian', (req, res) => {
     if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome librarian");
-        res.sendFile(path.join(__dirname, '/pages/dashboards/librarian.html'));
+        res.sendFile(path.join(__dirname, '/pages/dashboards/librarian'));
     }
     else {
         console.log("Not logged in as librarian");
@@ -160,7 +160,7 @@ app.get('/dashboards/librarian', (req, res) => {
 app.get('/dashboards/visitor', (req, res) => {
     if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "vis" || req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome visitor");
-        res.sendFile(path.join(__dirname, '/pages/dashboards/visitor.html'));
+        res.sendFile(path.join(__dirname, '/pages/dashboards/visitor'));
     }
     else {
         console.log("Not logged in as visitor");
