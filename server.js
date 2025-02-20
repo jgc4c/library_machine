@@ -246,4 +246,3 @@ function loadDatabase () {
     });
     console.log("data loaded!");
 }
-
