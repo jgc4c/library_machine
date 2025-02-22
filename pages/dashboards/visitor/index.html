@@ -25,11 +25,14 @@
     <!-- Tab content -->
     <div id="show-all" class="tabcontent w3-container w3-mobile">
         <p>Press below to show all books available in the library:</p>
+        <p>WARNING: Currently "unstable", will lag this dashboard!</p>
         <button onclick="getData()">Show All</button>
     </div>
   
     <div id="show-specific" class="tabcontent w3-container w3-mobile">
-        <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p>
+        <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p><br>
+        <p>NOTICE: You will be taken to a separate page for your requested book information.</p>
+        <p>Use a separate page tab to access this dashboard again.</p>
         <form action="/search-specific" method="POST">
             <p>Searching for:</p>
             <input type="radio" id="ISBN" name="book_search" value="ISBN" checked>
@@ -42,6 +45,7 @@
             <label for="genre">Genre</label><br>
 
             <p>Input the phrase/code related to the keyword:</p><br>
+            <p>NOTE: Be specific for your keywords, results may not appear if it's in a wrong format.</p><br>
             <label for="book_input">Input:</label>
             <input type="text" id="book_input" name="book_input"><br><br>
             <input type="submit" value="Submit">

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor Dashboard</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="w3-bar">
+        <a href="/" class="w3-bar-item w3-button w3-mobile">Home</a>
+        <a href="/login" class="w3-bar-item w3-button w3-light-grey w3-mobile">Login</a>
+    </div> 
+    <div class="w3-container w3-mobile" id="visitor-header">
+        <h1 id="heading">Welcome, Visitor!</h1>
+        <p>Please pick an option below:</p>
+    </div>
+    <div class="tab w3-container w3-mobile" id="visitor-selection">
+        <button class="tablinks" onclick="optionTab(event, 'show-all')">Show All Books</button>
+        <button class="tablinks" onclick="optionTab(event, 'show-specific')">Search a Book</button>
+        <button class="tablinks" onclick="optionTab(event, 'request')">Request a Book</button>
+    </div>
+    <!-- Tab content -->
+    <div id="show-all" class="tabcontent w3-container w3-mobile">
+        <p>Press below to show all books available in the library:</p>
+        <button onclick="getData()">Show All</button>
+    </div>
+  
+    <div id="show-specific" class="tabcontent w3-container w3-mobile">
+        <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p>
+        <form action="/search-specific" method="POST">
+            <p>Searching for:</p>
+            <input type="radio" id="ISBN" name="book_search" value="ISBN" checked>
+            <label for="ISBN">ISBN</label><br>
+            <input type="radio" id="book_name" name="book_search" value="Book_name">
+            <label for="book_name">Book Name</label><br>
+            <input type="radio" id="author" name="book_search" value="Author">
+            <label for="author">Author</label><br>
+            <input type="radio" id="genre" name="book_search" value="Genre">
+            <label for="genre">Genre</label><br>
+
+            <p>Input the phrase/code related to the keyword:</p><br>
+            <label for="book_input">Input:</label>
+            <input type="text" id="book_input" name="book_input"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+  
+    <div id="request" class="tabcontent w3-container w3-mobile">
+    </div>
+
+    <table id="output-table" border = "1"></table>
+
+    <script>
+        function getData() {
+            fetch('/book-display-all')
+            .then(response => response.json())
+            .then(data => {
+                displayData(data);
+            });
+        }
+        function displayData(data) {
+            let output =  document.getElementById("output-table");
+            //reset innerHTML on each button press,
+            //could display table as this format, there might be a better alternative way to display the book content
+            output.innerHTML = "";
+            output.innerHTML += 
+            "<tr>" + 
+                " <th>ISBN</th>" +
+                " <th>Book Name</th>" +
+                " <th>Author</th>" +
+                " <th>Genre</th>" +
+                " <th>Num_pages</th>" +
+                " <th>Count</th>" +
+            "</tr>";
+
+            for (var i = 0; i < data.length; i++) {
+                output.innerHTML += "<tr>";
+                output.innerHTML += 
+                  "<td>" + data[i].ISBN + "</td>"
+                + "<td>" + data[i].Book_name + "</td>"
+                + "<td>" + data[i].Author + "</td>"
+                + "<td>" + data[i].Genre + "</td>"
+                + "<td>" + data[i].Num_pages + "</td>"
+                + "<td>" + data[i].Count + "</td>";
+                output.innerHTML += "</tr>";
+            }
+        }
+
+        //Also imported from w3
+        function optionTab(evt, optionName) {
+        // Declare variables
+        var i, tabcontent, tablinks;
+
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(optionName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+
+    </script>
+
+
+</body>
+</html>
