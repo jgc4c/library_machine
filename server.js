@@ -180,9 +180,8 @@ app.get('/getAllBooks', (req, res) => {
     });  
 });
 
-app.post('/search-specific', (req, res) => {
+app.post('/searchSpecific', (req, res) => {
     const { book_search, value } = req.body;
-
     con.connect( (err) => {
         if (err) throw err;
         switch(book_search) {

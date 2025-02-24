@@ -1,14 +1,14 @@
 let page_min = 0;
 let page_max = 19;
-let data = "";
+let fullData = "";
 
 function nextPage() {
     page_max += 20;
     page_min += 20;
-    if (page_max > data.length) {
+    if (page_max > fullData.length) {
         prevPage();
     }
-    displayData();
+    displayData(fullData);
 }
 
 function prevPage() {
@@ -17,20 +17,29 @@ function prevPage() {
     if (page_min < 0) {
         nextPage();
     }
-    displayData();
+    displayData(fullData);
 }
 
 function getAllBooks() {
     fetch('/getAllBooks')
     .then(response => response.json())
     .then(results => {
-        data = results;
-        displayData();
+        fullData = results;
+        displayData(fullData);
     });
 }
 
-function displayData() {
+function displayData(data) {
     let output =  document.getElementById("output-table");
+    let tableSize = 0;
+
+    if (data.length < page_max){
+        tableSize = data.length;
+        output =  document.getElementById("search-table");
+    }
+    else{
+        tableSize = page_max
+    }
     //reset innerHTML on each button press,
     //could display table as this format, there might be a better alternative way to display the book content
     output.innerHTML = "";
@@ -44,7 +53,7 @@ function displayData() {
         " <th>Count</th>" +
     "</tr>";
 
-    for (var i = page_min; i < page_max; i++) {
+    for (var i = page_min; i < tableSize; i++) {
         output.innerHTML += "<tr>";
         output.innerHTML += 
           "<td>" + data[i].ISBN + "</td>"
@@ -70,7 +79,7 @@ $(document).ready( () => {
         $("#request").hide();
         page_min = 0;
         page_max = 19;
-        displayData();
+        displayData(fullData);
     });
 
     $("#toggle-search").click( () => {
@@ -79,7 +88,7 @@ $(document).ready( () => {
         $("#request").hide();
         page_min = 0;
         page_max = 19;
-        displayData();
+        displayData(fullData);
     });
 
     $("#toggle-request").click( () => {
@@ -92,6 +101,15 @@ $(document).ready( () => {
         let field = $("#search_type").val();
         let value = $("#search_value").val();
 
-        
+        var query = { 'book_search' : field, 'value' : value };
+        console.log(query);
+
+        $.ajax({
+            url: '/searchSpecific',
+            type: 'POST',
+            cache: false, 
+            data: { book_search : field, value : value },
+            success: function(response){ displayData(response); }
+        } );
     })
 });
