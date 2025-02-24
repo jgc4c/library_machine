@@ -1,14 +1,17 @@
 let page_min = 0;
 let page_max = 19;
+let table_id = 0;
 let fullData = "";
+let searchData = "";
+let currData = "";
 
 function nextPage() {
     page_max += 20;
     page_min += 20;
-    if (page_max > fullData.length) {
+    if (page_max > currData.length) {
         prevPage();
     }
-    displayData(fullData);
+    displayData(currData, table_id);
 }
 
 function prevPage() {
@@ -17,7 +20,7 @@ function prevPage() {
     if (page_min < 0) {
         nextPage();
     }
-    displayData(fullData);
+    displayData(currData, table_id);
 }
 
 function getAllBooks() {
@@ -25,17 +28,24 @@ function getAllBooks() {
     .then(response => response.json())
     .then(results => {
         fullData = results;
-        displayData(fullData);
+        displayData(fullData, table_id);
     });
 }
 
-function displayData(data) {
-    let output =  document.getElementById("output-table");
+function displayData(data, id) {
+    let output =  "";
     let tableSize = 0;
+
+    if (id == 0){ //id = 0, display all
+        output =  document.getElementById("output-all-table");
+    }
+    else if (id == 1) { //id = 1, display search
+        output =  document.getElementById("search-table");
+    }
+
 
     if (data.length < page_max){
         tableSize = data.length;
-        output =  document.getElementById("search-table");
     }
     else{
         tableSize = page_max
@@ -79,7 +89,9 @@ $(document).ready( () => {
         $("#request").hide();
         page_min = 0;
         page_max = 19;
-        displayData(fullData);
+        table_id = 0;
+        currData = fullData;
+        displayData(currData, table_id);
     });
 
     $("#toggle-search").click( () => {
@@ -88,7 +100,9 @@ $(document).ready( () => {
         $("#request").hide();
         page_min = 0;
         page_max = 19;
-        displayData(fullData);
+        table_id = 1;
+        currData = searchData;
+        displayData(currData, table_id);
     });
 
     $("#toggle-request").click( () => {
@@ -109,7 +123,7 @@ $(document).ready( () => {
             type: 'POST',
             cache: false, 
             data: { book_search : field, value : value },
-            success: function(response){ displayData(response); }
+            success: function(response){ searchData = response; displayData(response, table_id); }
         } );
     })
 });
