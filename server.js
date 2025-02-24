@@ -135,10 +135,10 @@ app.get('/logout', (req, res) => { // route for logging out, deletes user sessio
     })
 });
 
-app.get('/dashboards/admin', (req, res) => { // routing for getting to admin dashboard
+app.get('/dashboards/admin/', (req, res) => { // routing for getting to admin dashboard
     if (req.session.isLoggedIn && req.session.username.substring(0,3) == "adm") {
         console.log("welcome admin");
-        res.sendFile(path.join(__dirname, '/pages/dashboards/admin'));
+        res.sendFile(path.join(__dirname, '/pages/dashboards/admin/admin.html'));
     }
     else {
         console.log("Not logged in as admin");
@@ -149,7 +149,7 @@ app.get('/dashboards/admin', (req, res) => { // routing for getting to admin das
 app.get('/dashboards/librarian', (req, res) => { // routing for getting to librarian dashboard
     if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome librarian");
-        res.sendFile(path.join(__dirname, '/pages/dashboards/librarian'));
+        res.sendFile(path.join(__dirname, '/pages/dashboards/librarian/librarian.html'));
     }
     else {
         console.log("Not logged in as librarian");
@@ -160,7 +160,7 @@ app.get('/dashboards/librarian', (req, res) => { // routing for getting to libra
 app.get('/dashboards/visitor', (req, res) => { // routing for getting to visitor dashboard
     if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "vis" || req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
         console.log("welcome visitor");
-        res.sendFile(path.join(__dirname, '/pages/dashboards/visitor'));
+        res.sendFile(path.join(__dirname, '/pages/dashboards/visitor/visitor.html'));
     }
     else {
         console.log("Not logged in as visitor");

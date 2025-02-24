@@ -29,10 +29,6 @@ function getAllBooks() {
     });
 }
 
-function getSpecificBooks() {
-
-}
-
 function displayData() {
     let output =  document.getElementById("output-table");
     //reset innerHTML on each button press,
@@ -63,29 +59,39 @@ function displayData() {
     output.classList.add("w3-hoverable");
 }
 
-//Also imported from w3
-function optionTab(evt, optionName) {
-    // Declare variables
-    var i, tabcontent, tablinks;
-
-    // Get all elements with class="tabcontent" and hide them
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    // Get all elements with class="tablinks" and remove the class "active"
-    tablinks = document.getElementsByClassName("tablinks");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-
-    // Show the current tab, and add an "active" class to the button that opened the tab
-    document.getElementById(optionName).style.display = "block";
-    evt.currentTarget.className += " active";
-}
-
 $(document).ready( () => {
     getAllBooks();
-    optionTab(event, 'show-all');
+    $("#search").hide();
+    $("#request").hide();
+
+    $("#toggle-show-all").click( () => {
+        $("#show-all").show();
+        $("#search").hide();
+        $("#request").hide();
+        page_min = 0;
+        page_max = 19;
+        displayData();
+    });
+
+    $("#toggle-search").click( () => {
+        $("#show-all").hide();
+        $("#search").show();
+        $("#request").hide();
+        page_min = 0;
+        page_max = 19;
+        displayData();
+    });
+
+    $("#toggle-request").click( () => {
+        $("#show-all").hide();
+        $("#search").hide();
+        $("#request").show();
+    });
+
+    $("#submit_search").click ( () => {
+        let field = $("#search_type").val();
+        let value = $("#search_value").val();
+
+        
+    })
 });

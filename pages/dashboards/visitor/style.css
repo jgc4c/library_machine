@@ -3,6 +3,11 @@
     color: white;
 };
 
+.w3-button {
+    background-color: #4D685A;
+    color: white;
+}
+
 .output-table {
     margin-left: auto;
     margin-right: auto;

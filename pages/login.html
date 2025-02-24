@@ -7,10 +7,18 @@
     </head>
     <body>
         <!--Add content blocks if needed-->
-        <div class="w3-bar">
+        <div class="w3-bar w3-mobile">
             <a href="/" class="w3-bar-item w3-button w3-mobile">Home</a>
-            <a href="/login" class="w3-bar-item w3-button w3-light-grey w3-mobile">Login</a>
-        </div> 
+            <a href="/login" class="w3-bar-item w3-button w3-mobile">Login</a>
+            <div class="w3-dropdown-hover">
+                <button class="w3-button">Dashboards</button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                  <a href="/dashboards/visitor" class="w3-bar-item w3-button">Visitor</a>
+                  <a href="/dashboards/librarian" class="w3-bar-item w3-button">Librarian</a>
+                  <a href="/dashboards/admin" class="w3-bar-item w3-button">Admin</a>
+                </div>
+            </div>
+        </div>  
         
         <div class="w3-container w3-mobile" id="login-header">
             <h1 id="heading">Welcome to the Library Machine!</h1>
