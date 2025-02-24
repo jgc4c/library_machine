@@ -169,7 +169,8 @@ app.get('/dashboards/visitor', (req, res) => { // routing for getting to visitor
 });
 
 //Functionalities for visitor dashboard goes here
-app.get('/book-display-all', (req, res) => {
+app.get('/getAllBooks', (req, res) => {
+    const {min, max} = req.body;
     con.connect((err) => {
         if (err) throw err;
         con.query(`SELECT * FROM Book`, (err, results, fields) => {
@@ -180,145 +181,34 @@ app.get('/book-display-all', (req, res) => {
 });
 
 app.post('/search-specific', (req, res) => {
-    let book_search = req.body.book_search;
-    let book_input = req.body.book_input;
-    console.log(book_search);
-    console.log(book_input);
+    const { book_search, value } = req.body;
 
-    con.connect((err) => {
+    con.connect( (err) => {
         if (err) throw err;
-        switch (book_search) {
+        switch(book_search) {
             case "ISBN":
-                con.query('SELECT * FROM Book WHERE ISBN = "' + book_input +'"', (err, result, fields) => {
+                con.query(`SELECT * FROM Book WHERE ISBN="${value}"`, (err, results, fields) => {
                     if (err) throw err;
-                    //console.log(result[0])
-                    //The absolute mess that is this below, most certainly need a fix if we want to display the result in dashboard proper
-                    res.setHeader('content-type', 'text/html');
-                    res.write("<table border = 1>" + "<tr>" + 
-                            " <th>ISBN</th>" +
-                            " <th>Book Name</th>" +
-                            " <th>Author</th>" +
-                            " <th>Genre</th>" +
-                            " <th>Num_pages</th>" +
-                            " <th>Count</th>" +
-                            "</tr>");
-                    for (var i = 0; i < result.length; i++){
-                        res.write("<tr>");
-                        res.write("<td>" + result[i].ISBN + "</td>" +
-                                  "<td>" + result[i].Book_name + "</td>" +
-                                  "<td>" + result[i].Author + "</td>" +
-                                  "<td>" + result[i].Genre + "</td>" +
-                                  "<td>" + result[i].Num_pages + "</td>" +
-                                  "<td>" + result[i].Count + "</td>"
-                        );
-                        res.write("</tr>");
-                    }
-                    res.write("</table>");
-                    res.write("<br><br>");
-                    res.write("<p>Book data retrieved.</p> <p>Keep this page on and return to dashboard on a separate tab if you want to request this (or these) specific books.</p>");
-                    res.end("<p>If there is no book information(s) displayed on this table, return back to the dashboard.</p>")
+                    res.json(results);
                 });
                 break;
             case "Book_name":
-                con.query('SELECT * FROM Book WHERE Book_name = "' + book_input +'"', (err, result, fields) => {
-                    if (err) throw err;
-                    //console.log(result[0])
-                    res.setHeader('content-type', 'text/html');
-                    res.write("<table border = 1>" + "<tr>" + 
-                            " <th>ISBN</th>" +
-                            " <th>Book Name</th>" +
-                            " <th>Author</th>" +
-                            " <th>Genre</th>" +
-                            " <th>Num_pages</th>" +
-                            " <th>Count</th>" +
-                            "</tr>");
-                    for (var i = 0; i < result.length; i++){
-                        res.write("<tr>");
-                        res.write("<td>" + result[i].ISBN + "</td>" +
-                                  "<td>" + result[i].Book_name + "</td>" +
-                                  "<td>" + result[i].Author + "</td>" +
-                                  "<td>" + result[i].Genre + "</td>" +
-                                  "<td>" + result[i].Num_pages + "</td>" +
-                                  "<td>" + result[i].Count + "</td>"
-                        );
-                        res.write("</tr>");
-                    }
-                    res.write("</table>");
-                    res.write("<br><br>");
-                    res.write("<p>Book data retrieved.</p> <p>Keep this page on and return to dashboard on a separate tab if you want to request this (or these) specific books.</p>");
-                    res.end("<p>If there is no book information(s) displayed on this table, return back to the dashboard.</p>")
-                });
-                break;
             case "Author":
-                con.query('SELECT * FROM Book WHERE Author LIKE "%' + book_input +'%"', (err, result, fields) => {
-                    if (err) throw err;
-                    //console.log(result[0])
-                    res.setHeader('content-type', 'text/html');
-                    res.write("<table border = 1>" + "<tr>" + 
-                            " <th>ISBN</th>" +
-                            " <th>Book Name</th>" +
-                            " <th>Author</th>" +
-                            " <th>Genre</th>" +
-                            " <th>Num_pages</th>" +
-                            " <th>Count</th>" +
-                            "</tr>");
-                    for (var i = 0; i < result.length; i++){
-                        res.write("<tr>");
-                        res.write("<td>" + result[i].ISBN + "</td>" +
-                                  "<td>" + result[i].Book_name + "</td>" +
-                                  "<td>" + result[i].Author + "</td>" +
-                                  "<td>" + result[i].Genre + "</td>" +
-                                  "<td>" + result[i].Num_pages + "</td>" +
-                                  "<td>" + result[i].Count + "</td>"
-                        );
-                        res.write("</tr>");
-                    }
-                    res.write("</table>");
-                    res.write("<br><br>");
-                    res.write("<p>Book data retrieved.</p> <p>Keep this page on and return to dashboard on a separate tab if you want to request this (or these) specific books.</p>");
-                    res.end("<p>If there is no book information(s) displayed on this table, return back to the dashboard.</p>")
-                });
-                break;
             case "Genre":
-                con.query('SELECT * FROM Book WHERE Genre = "' + book_input +'"', (err, result, fields) => {
+                con.query(`SELECT * FROM Book WHERE ${book_search} LIKE "%${value}%"`, (err, results, fields) => {
                     if (err) throw err;
-                    //console.log(result[0])
-                    res.setHeader('content-type', 'text/html');
-                    res.write("<table border = 1>" + "<tr>" + 
-                            " <th>ISBN</th>" +
-                            " <th>Book Name</th>" +
-                            " <th>Author</th>" +
-                            " <th>Genre</th>" +
-                            " <th>Num_pages</th>" +
-                            " <th>Count</th>" +
-                            "</tr>");
-                    for (var i = 0; i < result.length; i++){
-                        res.write("<tr>");
-                        res.write("<td>" + result[i].ISBN + "</td>" +
-                                  "<td>" + result[i].Book_name + "</td>" +
-                                  "<td>" + result[i].Author + "</td>" +
-                                  "<td>" + result[i].Genre + "</td>" +
-                                  "<td>" + result[i].Num_pages + "</td>" +
-                                  "<td>" + result[i].Count + "</td>"
-                        );
-                        res.write("</tr>");
-                    }
-                    res.write("</table>");
-                    res.write("<br><br>");
-                    res.write("<p>Book data retrieved.</p> <p>Keep this page on and return to dashboard on a separate tab if you want to request this (or these) specific books.</p>");
-                    res.end("<p>If there is no book information(s) displayed on this table, return back to the dashboard.</p>")
+                    res.json(results);
                 });
                 break;
         }
     });
-
 });
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`Access site at [ localhost:${port} ]`);
-    //makeDatabase();
-    //loadDatabase();
+    makeDatabase();
+    loadDatabase();
 });
 
 

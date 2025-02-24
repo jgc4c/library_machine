@@ -13,13 +13,14 @@ Author name and Genre might possibly be anonymous/unknown, adjust length of Auth
 Num_pages might be unknown (aka null) but count associates to total number of that book's copy in the library
 Currently refraining with adding Cover column */
 CREATE TABLE Book(
-	ISBN	  CHAR(20)		NOT NULL,
+    Book_id   INT          NOT NULL AUTO_INCREMENT,
+	ISBN	  CHAR(20)		NOT NULL UNIQUE,
     Book_name VARCHAR(255)   NOT NULL,
     Author	  VARCHAR(255),
     Genre	  VARCHAR(40),
     Num_pages INT,
     Count	  INT 			NOT NULL,
-    PRIMARY KEY(ISBN)
+    PRIMARY KEY(Book_id)
 );
 
 CREATE TABLE Admin(

@@ -6,6 +6,7 @@
     <title>Visitor Dashboard</title>
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="scripts.js"></script>
 </head>
 <body>
@@ -22,39 +23,34 @@
         <button class="tablinks" onclick="optionTab(event, 'show-specific')">Search a Book</button>
         <button class="tablinks" onclick="optionTab(event, 'request')">Request a Book</button>
     </div>
+    
     <!-- Tab content -->
     <div id="show-all" class="tabcontent w3-container w3-mobile">
-        <p>Press below to show all books available in the library:</p>
-        <p>WARNING: Currently "unstable", will lag this dashboard!</p>
-        <button onclick="getData()">Show All</button>
+        <p>All books available in the library:</p>
+        <table id="output-table"></table>
+        <button onclick="prevPage()">Previous</button>
+        <button onclick="nextPage()">Next</button>
     </div>
   
     <div id="show-specific" class="tabcontent w3-container w3-mobile">
-        <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p><br>
-        <p>NOTICE: You will be taken to a separate page for your requested book information.</p>
-        <p>Use a separate page tab to access this dashboard again.</p>
-        <form action="/search-specific" method="POST">
-            <p>Searching for:</p>
-            <input type="radio" id="ISBN" name="book_search" value="ISBN" checked>
-            <label for="ISBN">ISBN</label><br>
-            <input type="radio" id="book_name" name="book_search" value="Book_name">
-            <label for="book_name">Book Name</label><br>
-            <input type="radio" id="author" name="book_search" value="Author">
-            <label for="author">Author</label><br>
-            <input type="radio" id="genre" name="book_search" value="Genre">
-            <label for="genre">Genre</label><br>
-
-            <p>Input the phrase/code related to the keyword:</p><br>
-            <p>NOTE: Be specific for your keywords, results may not appear if it's in a wrong format.</p><br>
-            <label for="book_input">Input:</label>
-            <input type="text" id="book_input" name="book_input"><br><br>
+        <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p>
+        <form id="search_specific" action="/search-specific" method="post">
+            <label>Searching for:</label>
+            <select name="book_search" id="search_type">
+                <option value="ISBN">ISBN</option>
+                <option value="Book_name">Book Name</option>
+                <option value="Author">Author</option>
+                <option value="Genre">Genre</option>
+            </select>
+            <input type="text" id="value" name="value">
             <input type="submit" value="Submit">
         </form>
+        <table id="output-table"></table>
+        <button onclick="prevPage()">Previous</button>
+        <button onclick="nextPage()">Next</button>
     </div>
   
     <div id="request" class="tabcontent w3-container w3-mobile">
-    </div>
-
-    <table id="output-table" border = "1"></table>
+    </div>    
 </body>
 </html>
