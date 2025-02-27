@@ -47,7 +47,7 @@ CREATE TABLE Visitor(
     Visitor_pass	VARCHAR(30)		NOT NULL,
     First_name		VARCHAR(15)		NOT NULL,
     Last_name		VARCHAR(15)		NOT NULL,
-    Email			VARCHAR(320),
+    Email			VARCHAR(255),
     Phone_num		VARCHAR(20),
     PRIMARY KEY(Visitor_id)
 );
@@ -58,7 +58,7 @@ CREATE TABLE Loaner_list(
     ISBN 		CHAR(20)	  NOT NULL,
     Book_name 	VARCHAR(45)   NOT NULL,
     Borrower_id INT			  NOT NULL,
-    Borrow_name	VARCHAR(30)	  NOT NULL,
+    Borrow_fname	VARCHAR(30)	  NOT NULL,
     Approved_by INT			  NOT NULL,
     Loan_Date 	DATETIME	  DEFAULT current_timestamp,
     Due_Date 	DATETIME	  NOT NULL,
@@ -71,9 +71,9 @@ CREATE TABLE Loaner_list(
 CREATE TABLE Request_list(
 	Request_id		INT 		  NOT NULL AUTO_INCREMENT,
     ISBN 			CHAR(20)	  NOT NULL,
-	Book_name 		VARCHAR(45)   NOT NULL,
+	Book_name 		VARCHAR(255)   NOT NULL,
     Requester_id 	INT		  	  NOT NULL,
-    Requester_name	VARCHAR(30)	  NOT NULL,
+    Requester_fname	VARCHAR(30)	  NOT NULL,
     Request_Date 	DATETIME	  DEFAULT current_timestamp,
     PRIMARY KEY(Request_id),
     FOREIGN KEY(ISBN) REFERENCES Book(ISBN),
