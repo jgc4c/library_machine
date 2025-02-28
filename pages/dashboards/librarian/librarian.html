@@ -22,6 +22,58 @@
             </div>
         </div>
     </div> 
-    <h1>Librarian Dashboard</h1>
+
+    <div class="w3-container w3-mobile" id="librarian-header">
+        <h1 id="heading">Welcome, Librarian.</h1>
+        <p>Pick an option below to process book requests and returns:</p>
+    </div>
+
+    <div class="tab w3-container w3-mobile">
+        <button class="tablinks" id="toggle-request-list">Show All Requests</button>
+        <button class="tablinks" id="toggle-loaner-list">Show All Loaners</button>
+        <button class="tablinks" id="toggle-check-out">Check Out</button>
+        <button class="tablinks" id="toggle-returns">Return Books</button>
+    </div>
+
+    <!-- Tab content -->
+    <div id="request-list" class="w3-container w3-mobile">
+        <p>Current request list:</p>
+        <table id="output-request-table"></table>
+        <button class="w3-button" onclick="prevPage()">Previous</button>
+        <button class="w3-button" onclick="nextPage()">Next</button>
+    </div>
+
+    <div id="loaner-list" class="w3-container w3-mobile">
+        <p>Current loaner list:</p>
+        <table id="output-loaner-table"></table>
+        <button class="w3-button" onclick="prevPage()">Previous</button>
+        <button class="w3-button" onclick="nextPage()">Next</button>
+    </div>
+  
+    <div id="check-out" class="w3-container w3-mobile">
+        <p>Input the book request information ID from the request list and set how long the visitor can loan the book for.</p>
+        <p>This will move the request information to loaner list and attach your librarian ID as the one who authorized the book loan.</p>
+        <p>Note: accepting book request will decrement book availability (as count) by one in the library. </p>
+        <label>Set time and input the request ID to process book loaning:</label>
+        <select id="loan-duration">
+            <option value="1_week">One Week</option>
+            <option value="2_weeks">Two Weeks</option>
+            <option value="1_month">One Month (30 days)</option>
+        </select>
+        <input type="text" id="requesting_ID">
+        <button id="process_loan">Submit</button>
+        <p id ="output-message"></p>
+    </div>
+  
+    <div id="returns" class="w3-container w3-mobile">
+        <p>Process book returns from a visitor by inputting the loaner ID from the list.</p>
+        <p>This will remove the loaner information from the list and increment that book's availability back by one.</p>
+        <p>Note: Do absolutely be aware that the loaner have properly returned the book before the loan due date.</p>
+        <p>Once the return has been processed, the system will delete the associated loaner information.</p>
+        <label>Input the loaner information ID:</label>
+        <input type="text" id="loaner_ID">
+        <button id="return_book">Submit</button>
+        <p id ="output-message"></p>
+    </div>
 </body>
 </html>

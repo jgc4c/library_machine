@@ -10,7 +10,7 @@ const port = 3000;
 //differing user and password, need to change this per import from git (SC: {user:root,password:rootbeer} )
 var con = mysql.createConnection({
     host: "localhost",
-    user: "admin",
+    user: "root",
     password: "pingu",
     database: "library_machine",
     multipleStatements: true

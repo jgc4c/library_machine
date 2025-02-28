@@ -59,6 +59,14 @@
     </div>
   
     <div id="request" class="w3-container w3-mobile">
+        <p>Input the ISBN of the book you want to borrow.</p>
+        <p>Your account info will be added to the request table and will be processed by a librarian shortly.</p>
+        <p>If you don't know the ISBN number, use show all or search tab to look up the book's information.</p>
+        <p>The book you want to request cannot be borrowed if there is none available (count of 0).</p>
+        <label>Input the ISBN for request:</label>
+        <input type="text" id="request_book_ISBN">
+        <button id="request_input">Submit</button>
+        <p id ="output-message"></p>
     </div>    
 </body>
 </html>

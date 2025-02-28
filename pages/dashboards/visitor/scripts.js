@@ -28,6 +28,7 @@ function getAllBooks() {
     .then(response => response.json())
     .then(results => {
         fullData = results;
+        currData = fullData;
         displayData(fullData, table_id);
     });
 }
@@ -124,6 +125,11 @@ $(document).ready( () => {
             cache: false, 
             data: { book_search : field, value : value },
             success: function(response){ searchData = response; displayData(response, table_id); }
-        } );
+        });
     })
+
+    $("#request_input").click ( () => {
+        let ISBN_req = $("#request_book_ISBN").val();
+        console.log("Hello: " + ISBN_req);
+    });
 });
