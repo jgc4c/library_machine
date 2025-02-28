@@ -1,7 +1,7 @@
-# Weather Wachine
+# Library Wachine
 ## A Project for MTSU CSCI-4560 (Database Management)
 
-Weather Machine is an open-source library management software that allows for three different user types (Admin, Librarian, Visitor) as well as a request/checkout system for the books available. In addition to the software, it includes a schema that can be used for the database and it currently compatible with the given code. 
+Library Machine is an open-source library management software that allows for three different user types (Admin, Librarian, Visitor) as well as a request/checkout system for the books available. In addition to the software, it includes a schema that can be used for the database and it currently compatible with the given code. 
 
 ## User Types
 1. Admin
@@ -42,6 +42,9 @@ Access site at [ localhost:3000 ]
 ```
 
 So you would type in **localhost:3000** in your web browser to access the site.
+
+## Link to Repo
+- [https://github.com/jgc4c/library_machine](https://github.com/jgc4c/library_machine)
 
 
 
