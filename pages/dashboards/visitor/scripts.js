@@ -11,7 +11,7 @@ function nextPage() {
     if (page_max > currData.length) {
         prevPage();
     }
-    displayData(currData, table_id);
+    displayBookData(currData, table_id);
 }
 
 function prevPage() {
@@ -20,7 +20,7 @@ function prevPage() {
     if (page_min < 0) {
         nextPage();
     }
-    displayData(currData, table_id);
+    displayBookData(currData, table_id);
 }
 
 function getAllBooks() {
@@ -29,11 +29,11 @@ function getAllBooks() {
     .then(results => {
         fullData = results;
         currData = fullData;
-        displayData(fullData, table_id);
+        displayBookData(fullData, table_id);
     });
 }
 
-function displayData(data, id) {
+function displayBookData(data, id) {
     let output =  "";
     let tableSize = 0;
 
@@ -92,7 +92,7 @@ $(document).ready( () => {
         page_max = 19;
         table_id = 0;
         currData = fullData;
-        displayData(currData, table_id);
+        displayBookData(currData, table_id);
     });
 
     $("#toggle-search").click( () => {
@@ -103,7 +103,7 @@ $(document).ready( () => {
         page_max = 19;
         table_id = 1;
         currData = searchData;
-        displayData(currData, table_id);
+        displayBookData(currData, table_id);
     });
 
     $("#toggle-request").click( () => {
@@ -124,7 +124,7 @@ $(document).ready( () => {
             type: 'POST',
             cache: false, 
             data: { book_search : field, value : value },
-            success: function(response){ searchData = response; displayData(response, table_id); }
+            success: function(response){ searchData = response; displayBookData(response, table_id); }
         });
     })
 

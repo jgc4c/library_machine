@@ -25,7 +25,7 @@ CREATE TABLE Book(
 
 CREATE TABLE Admin(
 	Admin_id	INT				NOT NULL AUTO_INCREMENT,
-    Admin_user	VARCHAR(30)		NOT NULL,
+    Admin_user	VARCHAR(30)		NOT NULL UNIQUE,
     Admin_pass	VARCHAR(30)		NOT NULL,
     First_name	VARCHAR(15)		NOT NULL,
     Last_name	VARCHAR(15)		NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE Admin(
 
 CREATE TABLE Librarian(
 	Librarian_id	INT				NOT NULL AUTO_INCREMENT,
-    Librarian_user	VARCHAR(30)		NOT NULL,
+    Librarian_user	VARCHAR(30)		NOT NULL UNIQUE,
     Librarian_pass	VARCHAR(30)		NOT NULL,
     First_name		VARCHAR(15)		NOT NULL,
     Last_name		VARCHAR(15)		NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE Librarian(
 
 CREATE TABLE Visitor(
 	Visitor_id		INT				NOT NULL AUTO_INCREMENT,
-    Visitor_user	VARCHAR(30)		NOT NULL,
+    Visitor_user	VARCHAR(30)		NOT NULL UNIQUE,
     Visitor_pass	VARCHAR(30)		NOT NULL,
     First_name		VARCHAR(15)		NOT NULL,
     Last_name		VARCHAR(15)		NOT NULL,

@@ -147,7 +147,7 @@ app.get('/dashboards/admin/', (req, res) => { // routing for getting to admin da
 });
 
 app.get('/dashboards/librarian', (req, res) => { // routing for getting to librarian dashboard
-    if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
+    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "lib" ) {
         console.log("welcome librarian");
         res.sendFile(path.join(__dirname, '/pages/dashboards/librarian/librarian.html'));
     }
@@ -158,7 +158,7 @@ app.get('/dashboards/librarian', (req, res) => { // routing for getting to libra
 });
 
 app.get('/dashboards/visitor', (req, res) => { // routing for getting to visitor dashboard
-    if (req.session.isLoggedIn && (req.session.username.substring(0,3) == "vis" || req.session.username.substring(0,3) == "lib" || req.session.username.substring(0,3) == "adm")) {
+    if (req.session.isLoggedIn && req.session.username.substring(0,3) == "vis") {
         console.log("welcome visitor");
         res.sendFile(path.join(__dirname, '/pages/dashboards/visitor/visitor.html'));
     }
@@ -168,7 +168,7 @@ app.get('/dashboards/visitor', (req, res) => { // routing for getting to visitor
     }
 });
 
-//Functionalities for visitor dashboard goes here
+//Shared Dashboard functionality: Get books, search up specific book
 app.get('/getAllBooks', (req, res) => {
     const {min, max} = req.body;
     con.connect((err) => {

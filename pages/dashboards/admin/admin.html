@@ -23,15 +23,40 @@
         </div>
     </div> 
 
-    <div class="w3-container w3-mobile" id="librarian-header">
+    <div class="w3-container w3-mobile" id="administrator-header">
         <h1 id="heading">Welcome, Administrator.</h1>
         <p>Process accounts and books below here:</p>
     </div>
 
     <div class="tab w3-container w3-mobile">
+        <button class="tablinks" id="toggle-show-all">Show All</button>
+        <button class="tablinks" id="toggle-search">Search</button>
         <button class="tablinks" id="toggle-show-accounts">Show Specific Accounts</button>
         <button class="tablinks" id="toggle-account-operation">Add/Delete Accounts</button>
         <button class="tablinks" id="toggle-book-operation">Add/Delete Books</button>
+    </div>
+    
+    <div id="show-all" class="w3-container w3-mobile">
+        <p>All books available in the library:</p>
+        <table id="output-all-table"></table>
+        <button class="w3-button" onclick="prevPage()">Previous</button>
+        <button class="w3-button" onclick="nextPage()">Next</button>
+    </div>
+  
+    <div id="search" class="w3-container w3-mobile">
+        <p>Select an option from below and input your keyword related to the book(s) you are searching for.</p>
+        <label>Searching for:</label>
+        <select id="search_type">
+            <option value="ISBN">ISBN</option>
+            <option value="Book_name">Book Name</option>
+            <option value="Author">Author</option>
+            <option value="Genre">Genre</option>
+        </select>
+        <input type="text" id="search_value">
+        <button id="submit_search">Submit</button>
+        <table id="search-table"></table>
+        <button class="w3-button" onclick="prevPage()">Previous</button>
+        <button class="w3-button" onclick="nextPage()">Next</button>
     </div>
 </body>
 </html>
