@@ -131,5 +131,15 @@ $(document).ready( () => {
     $("#request_input").click ( () => {
         let ISBN_req = $("#request_book_ISBN").val();
         console.log("Hello: " + ISBN_req);
+
+        output = document.getElementById("output-message");
+
+        $.ajax({
+            url: '/sendBookRequest',
+            type: 'POST',
+            cache: false, 
+            data: { value : ISBN_req },
+            success: function(response){ output.innerHTML = response; }
+        });
     });
 });

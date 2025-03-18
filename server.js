@@ -203,11 +203,52 @@ app.post('/searchSpecific', (req, res) => {
     });
 });
 
+//Visitor functionality goes here
+
+app.post('/sendBookRequest', (req, res) => {
+    const { value } = req.body;
+    let book_data = {ISBN : "", name : ""};
+    let visitor_data = {ID : 1, vis_name : "test"};
+    con.connect( (err) => {
+        if (err) throw err;
+        con.query(`SELECT Count FROM Book WHERE ISBN="${value}"`, (err, results, fields) => {
+            if (err) throw err;
+
+            if (results[0].Count > 1){
+                //res.send("should continue from here");
+                con.query(`SELECT ISBN, Book_name FROM Book WHERE ISBN = "${value}"` , (err, results) => {
+                    console.log(results);
+                    book_data.ISBN = results[0].ISBN;
+                    book_data.name = results[0].Book_name;
+
+                    console.log(book_data.ISBN);
+                    console.log(book_data.name);
+                });
+
+
+                con.query(`INSERT INTO Request_list (ISBN, Book_name, Requester_id, Requester_fname) VALUES ("${book_data.ISBN}", "${book_data.name}", ${visitor_data.ID}, "${visitor_data.vis_name}")`, (err, results) => {
+                    if (err){
+                        res.send(`Error has occurred: ${err}`);
+                    }
+                    else{
+                        res.send("request processed");
+                    }
+                });
+            } 
+            else {
+                console.log(results[0].Count);
+                res.send("Error: cannot request a book that isn't available in our library! (on count of 0)");
+            }
+        });
+    });
+});
+
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`Access site at [ localhost:${port} ]`);
-    makeDatabase();
-    loadDatabase();
+    //makeDatabase();
+    //loadDatabase();
 });
 
 
