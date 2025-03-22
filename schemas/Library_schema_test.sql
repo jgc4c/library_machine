@@ -20,7 +20,7 @@ CREATE TABLE Book(
     Genre	  VARCHAR(40),
     Num_pages INT,
     Count	  INT 			NOT NULL,
-    PRIMARY KEY(Book_id)
+    PRIMARY KEY(Book_id, ISBN)
 );
 
 CREATE TABLE Admin(

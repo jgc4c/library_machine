@@ -1,9 +1,9 @@
-//NOTE: just duplicating what's in the visitor script.js
 let page_min = 0;
 let page_max = 19;
 let table_id = 0;
 let fullData = "";
 let searchData = "";
+let accountData = "";
 let currData = "";
 
 function nextPage() {
@@ -83,10 +83,16 @@ function displayBookData(data, id) {
 $(document).ready( () => {
     getAllBooks();
     $("#search").hide();
+    $("#show-accounts").hide();
+    $("#account-operation").hide();
+    $("#book-operation").hide();
 
     $("#toggle-show-all").click( () => {
         $("#show-all").show();
         $("#search").hide();
+        $("#show-accounts").hide();
+        $("#account-operation").hide();
+        $("#book-operation").hide();
         page_min = 0;
         page_max = 19;
         table_id = 0;
@@ -97,12 +103,47 @@ $(document).ready( () => {
     $("#toggle-search").click( () => {
         $("#show-all").hide();
         $("#search").show();
+        $("#show-accounts").hide();
+        $("#account-operation").hide();
+        $("#book-operation").hide();
         page_min = 0;
         page_max = 19;
         table_id = 1;
         currData = searchData;
         displayBookData(currData, table_id);
     });
+
+
+    $("#toggle-show-accounts").click( () => {
+        $("#show-all").hide();
+        $("#search").hide();
+        $("#show-accounts").show();
+        $("#account-operation").hide();
+        $("#book-operation").hide();
+        
+    });
+
+    $("#toggle-account-operation").click( () => {
+        $("#show-all").hide();
+        $("#search").hide();
+        $("#show-accounts").hide();
+        $("#account-operation").show();
+        $("#book-operation").hide();
+        
+    });
+
+    $("#toggle-book-operation").click( () => {
+        $("#show-all").hide();
+        $("#search").hide();
+        $("#show-accounts").hide();
+        $("#account-operation").hide();
+        $("#book-operation").show();
+        
+    });
+
+
+
+
 
     $("#submit_search").click ( () => {
         let field = $("#search_type").val();

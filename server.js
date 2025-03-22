@@ -207,48 +207,81 @@ app.post('/searchSpecific', (req, res) => {
 
 app.post('/sendBookRequest', (req, res) => {
     const { value } = req.body;
-    let book_data = {ISBN : "", name : ""};
+    let book_ISBN = "";
+    let book_title = "";
     let visitor_data = {ID : 1, vis_name : "test"};
     con.connect( (err) => {
         if (err) throw err;
         con.query(`SELECT Count FROM Book WHERE ISBN="${value}"`, (err, results, fields) => {
-            if (err) throw err;
+            if (err){
+                res.send("You have provided an invalid input, please try again.");
+            }
+            else{
+                //Checks if output is literally nothing (as invalid/not matching ISBN number)
+                if (results.length === 0){
+                    res.send("ERROR: Invalid/Not registered ISBN number!");
+                }
+                else if (results[0].Count > 0){
 
-            if (results[0].Count > 1){
-                //res.send("should continue from here");
-                con.query(`SELECT ISBN, Book_name FROM Book WHERE ISBN = "${value}"` , (err, results) => {
-                    console.log(results);
-                    book_data.ISBN = results[0].ISBN;
-                    book_data.name = results[0].Book_name;
+                    //Have proper hit on ISBN value.
+                    book_ISBN = value;
+                    //res.send("should continue from here");
+                    con.query(`SELECT ISBN, Book_name FROM Book WHERE ISBN = "${value}"` , (err, results) => {
+                        console.log(results);
+                        //TODO fix, likely have to play around with async/await, Javascript assign operator isn't what is expected
+                        book_title = (' ' + results[0].Book_name).slice(1);
+                    });
 
-                    console.log(book_data.ISBN);
-                    console.log(book_data.name);
-                });
-
-
-                con.query(`INSERT INTO Request_list (ISBN, Book_name, Requester_id, Requester_fname) VALUES ("${book_data.ISBN}", "${book_data.name}", ${visitor_data.ID}, "${visitor_data.vis_name}")`, (err, results) => {
-                    if (err){
-                        res.send(`Error has occurred: ${err}`);
-                    }
-                    else{
-                        res.send("request processed");
-                    }
-                });
-            } 
-            else {
-                console.log(results[0].Count);
-                res.send("Error: cannot request a book that isn't available in our library! (on count of 0)");
+                    //Currently outputs nothing, but inserting into request list works. If nothing works, we may have to involve some ugly nesting in code.
+                    console.log(book_title);
+                    con.query(`INSERT INTO Request_list (ISBN, Book_name, Requester_id, Requester_fname) VALUES ("${book_ISBN}", "${book_title}", ${visitor_data.ID}, "${visitor_data.vis_name}")`, (err, results) => {
+                        if (err){
+                            res.send(`An error involving our database has occurred: ${err}`);
+                        }
+                        else{
+                            res.send("Your book request has been processed.");
+                        }
+                    });
+                } 
+                else {
+                    res.send("Error: cannot request a book that isn't available in our library! (on count of 0)");
+                }
             }
         });
     });
 });
 
+//Librarian functionality goes here
+app.get('/getAllRequests', (req, res) => {
+    const {min, max} = req.body;
+    con.connect((err) => {
+        if (err) throw err;
+        con.query(`SELECT * FROM Request_list`, (err, results, fields) => {
+            if (err) throw err;
+            res.json(results);
+        })
+    });  
+});
+
+app.get('/getAllLoaners', (req, res) => {
+    const {min, max} = req.body;
+    con.connect((err) => {
+        if (err) throw err;
+        con.query(`SELECT * FROM Loaner_list`, (err, results, fields) => {
+            if (err) throw err;
+            res.json(results);
+        })
+    });  
+});
+//Administrator functionality goes here
+
+
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
     console.log(`Access site at [ localhost:${port} ]`);
-    //makeDatabase();
-    //loadDatabase();
+    makeDatabase();
+    loadDatabase();
 });
 
 
