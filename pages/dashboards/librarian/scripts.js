@@ -60,18 +60,18 @@ function getAllRequests() {
     .then(results => {
         requestData = results;
         currData = requestData;
-        //displayData(requestData, table_id);
+        displayRequesterData(requestData);
     });
 }
 
 
 function getAllLoaner() {
-    fetch('/getAllLoaner')
+    fetch('/getAllLoaners')
     .then(response => response.json())
     .then(results => {
         loanerData = results;
         currData = loanerData;
-        //displayData(loanerData, table_id);
+        displayLoanerData(loanerData);
     });
 }
 
@@ -121,19 +121,93 @@ function displayBookData(data, id) {
     output.classList.add("w3-hoverable");
 }
 
-function displayRequesterData(){
+function displayRequesterData(data){
+    let output =  "";
+    let tableSize = 0;
+    output =  document.getElementById("output-request-table");
+
+    if (data.length < page_max){
+        tableSize = data.length;
+    }
+    else{
+        tableSize = page_max;
+    }
+
+    output.innerHTML = "";
+    output.innerHTML += 
+    "<tr>" + 
+        " <th>Request ID</th>" +
+        " <th>ISBN</th>" +
+        " <th>Book Name</th>" +
+        " <th>Requester ID</th>" +
+        " <th>Requester Username</th>" +
+        " <th>Request Date</th>" +
+    "</tr>";
+
+    for (var i = page_min; i < tableSize; i++) {
+        output.innerHTML += "<tr>";
+        output.innerHTML += 
+          "<td>" + data[i].Request_id + "</td>"
+        + "<td>" + data[i].ISBN + "</td>"
+        + "<td>" + data[i].Book_name + "</td>"
+        + "<td>" + data[i].Requester_id + "</td>"
+        + "<td>" + data[i].Requester_user + "</td>"
+        + "<td>" + data[i].Request_Date + "</td>";
+        output.innerHTML += "</tr>";
+    }
+    output.classList.add("w3-table-all");
+    output.classList.add("w3-hoverable");
+
 
 }
 
-function displayLoanerData(){
+//WARNING: Haven't tested the display for this
+function displayLoanerData(data){
+    let output =  "";
+    let tableSize = 0;
+    output =  document.getElementById("output-loaner-table");
+
+    if (data.length < page_max){
+        tableSize = data.length;
+    }
+    else{
+        tableSize = page_max;
+    }
+
+    output.innerHTML = "";
+    output.innerHTML += 
+    "<tr>" + 
+        " <th>Loan ID</th>" +
+        " <th>ISBN</th>" +
+        " <th>Book Name</th>" +
+        " <th>Borrower ID</th>" +
+        " <th>Borrower Fname</th>" +
+        " <th>Approved By</th>" +
+        " <th>Loan Start Date</th>" +
+        " <th>Due By</th>" +
+    "</tr>";
+
+    for (var i = page_min; i < tableSize; i++) {
+        output.innerHTML += "<tr>";
+        output.innerHTML += 
+          "<td>" + data[i].Loan_id + "</td>"
+        + "<td>" + data[i].ISBN + "</td>"
+        + "<td>" + data[i].Book_name + "</td>"
+        + "<td>" + data[i].Borrower_id + "</td>"
+        + "<td>" + data[i].Borrow_user + "</td>"
+        + "<td>" + data[i].Approved_by + "</td>"
+        + "<td>" + data[i].Loan_Date + "</td>"
+        + "<td>" + data[i].Due_Date + "</td>";
+        output.innerHTML += "</tr>";
+    }
+    output.classList.add("w3-table-all");
+    output.classList.add("w3-hoverable");
 
 }
 
 
 $(document).ready( () => {
     getAllBooks();
-    getAllRequests();
-    getAllLoaner();
     $("#search").hide();
     $("#request-list").hide();
     $("#loaner-list").hide();
@@ -170,6 +244,7 @@ $(document).ready( () => {
 
 
     $("#toggle-request-list").click( () => {
+        getAllRequests();
         $("#show-all").hide();
         $("#search").hide();
         $("#request-list").show();
@@ -184,6 +259,7 @@ $(document).ready( () => {
     });
 
     $("#toggle-loaner-list").click( () => {
+        getAllLoaner();
         $("#show-all").hide();
         $("#search").hide();
         $("#request-list").hide();
@@ -194,7 +270,7 @@ $(document).ready( () => {
         page_max = 19;
         table_id = 3;
         currData = loanerData;
-        displayRequesterData(currData);
+        displayLoanerData(currData);
     });
 
     $("#toggle-check-out").click( () => {
@@ -230,5 +306,20 @@ $(document).ready( () => {
             success: function(response){ searchData = response; displayBookData(response, table_id); }
         });
     })
+
+    $("#process_loan").click ( () => {
+        let duration = $("#loan-duration").val();
+        let request_ID = $("#requesting_ID").val();
+
+        console.log(duration, request_ID);
+
+    });
+
+    $("#return_book").click ( () => {
+        let loan_ID = $("#loaner_ID").val();
+
+        console.log(loan_ID);
+
+    });
 
 });

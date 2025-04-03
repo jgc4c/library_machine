@@ -10,7 +10,7 @@ const port = 3000;
 //differing user and password, need to change this per import from git (SC: {user:root,password:rootbeer} )
 var con = mysql.createConnection({
     host: "localhost",
-    user: "root",
+    user: "host",
     password: "pingu",
     database: "library_machine",
     multipleStatements: true
@@ -44,12 +44,14 @@ app.post('/login-check', (req, res) => { // post request for checking login cred
         if (err) throw err;
         switch (user_type) {
             case "Visitor":
-                con.query(`SELECT Visitor_user, Visitor_pass FROM Visitor`, function (err, result, fields) {
+                con.query(`SELECT Visitor_id, Visitor_user, Visitor_pass FROM Visitor`, function (err, result, fields) {
                     if (err) throw err;
                     // console.log(result);
                     let valid = false;
+                    let userIndex = -1;
                     for (var i = 0; i < result.length; i++) {
                         if (username == result[i].Visitor_user && password == result[i].Visitor_pass) {
+                            userIndex = i;
                             valid = true;
                             break;
                         }
@@ -59,6 +61,7 @@ app.post('/login-check', (req, res) => { // post request for checking login cred
                         console.log("login success for visitor");
                         req.session.isLoggedIn = true;
                         req.session.username = "vis_" + username;
+                        req.session.userID = result[userIndex].Visitor_id;
         
                         res.redirect(`/dashboards/${user_type.toLowerCase()}`);
                     }
@@ -69,12 +72,14 @@ app.post('/login-check', (req, res) => { // post request for checking login cred
                 });
                 break;
             case "Librarian":
-                con.query(`SELECT Librarian_user, Librarian_pass FROM Librarian`, function (err, result, fields) {
+                con.query(`SELECT Librarian_id, Librarian_user, Librarian_pass FROM Librarian`, function (err, result, fields) {
                     if (err) throw err;
                     // console.log(result);
                     let valid = false;
+                    let userIndex = -1;
                     for (var i = 0; i < result.length; i++) {
                         if (username == result[i].Librarian_user && password == result[i].Librarian_pass) {``
+                            userIndex = i;
                             valid = true;
                             break;
                         }
@@ -84,6 +89,7 @@ app.post('/login-check', (req, res) => { // post request for checking login cred
                         console.log("login success for librarian");
                         req.session.isLoggedIn = true;
                         req.session.username = "lib_" + username;
+                        req.session.userID = result[userIndex].Librarian_id;
         
                         res.redirect(`/dashboards/${user_type.toLowerCase()}`);
                     }
@@ -94,12 +100,14 @@ app.post('/login-check', (req, res) => { // post request for checking login cred
                 });
                 break;
             case "Admin":
-                con.query(`SELECT Admin_user, Admin_pass FROM Admin`, function (err, result, fields) {
+                con.query(`SELECT Admin_id, Admin_user, Admin_pass FROM Admin`, function (err, result, fields) {
                     if (err) throw err;
                     // console.log(result);
                     let valid = false;
+                    let userIndex = -1;
                     for (var i = 0; i < result.length; i++) {
                         if (username == result[i].Admin_user && password == result[i].Admin_pass) {
+                            userIndex = i;
                             valid = true;
                             break;
                         }
@@ -109,6 +117,7 @@ app.post('/login-check', (req, res) => { // post request for checking login cred
                         console.log("login success for admin");
                         req.session.isLoggedIn = true;
                         req.session.username = "adm_" + username;
+                        req.session.userID = result[userIndex].Admin_id;
         
                         res.redirect(`/dashboards/${user_type.toLowerCase()}`);
                     }
@@ -138,6 +147,7 @@ app.get('/logout', (req, res) => { // route for logging out, deletes user sessio
 app.get('/dashboards/admin/', (req, res) => { // routing for getting to admin dashboard
     if (req.session.isLoggedIn && req.session.username.substring(0,3) == "adm") {
         console.log("welcome admin");
+        console.log("User logging in as: " + req.session.username + ", User ID: " + req.session.userID);
         res.sendFile(path.join(__dirname, '/pages/dashboards/admin/admin.html'));
     }
     else {
@@ -149,6 +159,7 @@ app.get('/dashboards/admin/', (req, res) => { // routing for getting to admin da
 app.get('/dashboards/librarian', (req, res) => { // routing for getting to librarian dashboard
     if (req.session.isLoggedIn && req.session.username.substring(0,3) == "lib" ) {
         console.log("welcome librarian");
+        console.log("User logging in as: " + req.session.username + ", User ID: " + req.session.userID);
         res.sendFile(path.join(__dirname, '/pages/dashboards/librarian/librarian.html'));
     }
     else {
@@ -160,6 +171,7 @@ app.get('/dashboards/librarian', (req, res) => { // routing for getting to libra
 app.get('/dashboards/visitor', (req, res) => { // routing for getting to visitor dashboard
     if (req.session.isLoggedIn && req.session.username.substring(0,3) == "vis") {
         console.log("welcome visitor");
+        console.log("User logging in as: " + req.session.username + ", User ID: " + req.session.userID);
         res.sendFile(path.join(__dirname, '/pages/dashboards/visitor/visitor.html'));
     }
     else {
@@ -209,7 +221,7 @@ app.post('/sendBookRequest', (req, res) => {
     const { value } = req.body;
     let book_ISBN = "";
     let book_title = "";
-    let visitor_data = {ID : 1, vis_name : "test"};
+    let visitor_data = {ID : req.session.userID, vis_name : req.session.username};
     con.connect( (err) => {
         if (err) throw err;
         con.query(`SELECT Count FROM Book WHERE ISBN="${value}"`, (err, results, fields) => {
@@ -227,20 +239,18 @@ app.post('/sendBookRequest', (req, res) => {
                     book_ISBN = value;
                     //res.send("should continue from here");
                     con.query(`SELECT ISBN, Book_name FROM Book WHERE ISBN = "${value}"` , (err, results) => {
-                        console.log(results);
+                        
                         //TODO fix, likely have to play around with async/await, Javascript assign operator isn't what is expected
-                        book_title = (' ' + results[0].Book_name).slice(1);
-                    });
-
-                    //Currently outputs nothing, but inserting into request list works. If nothing works, we may have to involve some ugly nesting in code.
-                    console.log(book_title);
-                    con.query(`INSERT INTO Request_list (ISBN, Book_name, Requester_id, Requester_fname) VALUES ("${book_ISBN}", "${book_title}", ${visitor_data.ID}, "${visitor_data.vis_name}")`, (err, results) => {
-                        if (err){
-                            res.send(`An error involving our database has occurred: ${err}`);
-                        }
-                        else{
-                            res.send("Your book request has been processed.");
-                        }
+                        book_title = results[0].Book_name;
+                        console.log(book_title);
+                        con.query(`INSERT INTO Request_list (ISBN, Book_name, Requester_id, Requester_user) VALUES ("${book_ISBN}", "${book_title}", ${visitor_data.ID}, "${visitor_data.vis_name}")`, (err, results) => {
+                            if (err){
+                                res.send(`An error involving our database has occurred: ${err}`);
+                            }
+                            else{
+                                res.send("Your book request has been processed.");
+                            }
+                        });
                     });
                 } 
                 else {

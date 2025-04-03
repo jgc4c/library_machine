@@ -3,7 +3,8 @@ let page_max = 19;
 let table_id = 0;
 let fullData = "";
 let searchData = "";
-let accountData = "";
+let visitorData = "";
+let librarianData = "";
 let currData = "";
 
 function nextPage() {
