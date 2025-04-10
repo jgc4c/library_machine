@@ -10,7 +10,7 @@ const port = 3000;
 //differing user and password, need to change this per import from git (SC: {user:root,password:rootbeer} )
 var con = mysql.createConnection({
     host: "localhost",
-    user: "host",
+    user: "root",
     password: "pingu",
     database: "library_machine",
     multipleStatements: true
@@ -226,12 +226,12 @@ app.post('/sendBookRequest', (req, res) => {
         if (err) throw err;
         con.query(`SELECT Count FROM Book WHERE ISBN="${value}"`, (err, results, fields) => {
             if (err){
-                res.send("You have provided an invalid input, please try again.");
+                res.send( "<b>" + "You have provided an invalid input, please try again." + "</b>");
             }
             else{
                 //Checks if output is literally nothing (as invalid/not matching ISBN number)
                 if (results.length === 0){
-                    res.send("ERROR: Invalid/Not registered ISBN number!");
+                    res.send( "<b>" + "ERROR: Invalid/Not registered ISBN number!" + "</b>");
                 }
                 else if (results[0].Count > 0){
 
@@ -242,19 +242,19 @@ app.post('/sendBookRequest', (req, res) => {
                         
                         //TODO fix, likely have to play around with async/await, Javascript assign operator isn't what is expected
                         book_title = results[0].Book_name;
-                        console.log(book_title);
+                        
                         con.query(`INSERT INTO Request_list (ISBN, Book_name, Requester_id, Requester_user) VALUES ("${book_ISBN}", "${book_title}", ${visitor_data.ID}, "${visitor_data.vis_name}")`, (err, results) => {
                             if (err){
-                                res.send(`An error involving our database has occurred: ${err}`);
+                                res.send("<b>" + "An error involving our database has occurred:" + "</b>" + err);
                             }
                             else{
-                                res.send("Your book request has been processed.");
+                                res.send("<b>" + "Your book request has been processed." + "</b>");
                             }
                         });
                     });
                 } 
                 else {
-                    res.send("Error: cannot request a book that isn't available in our library! (on count of 0)");
+                    res.send("<b>" + "Error: cannot request a book that isn't available in our library! (on count of 0)" + "</b>");
                 }
             }
         });
@@ -283,9 +283,134 @@ app.get('/getAllLoaners', (req, res) => {
         })
     });  
 });
+
+
 //Administrator functionality goes here
+app.get('/getVisitorInfo', (req, res) => {
+    const {min, max} = req.body;
+    con.connect((err) => {
+        if (err) throw err;
+        con.query(`SELECT * FROM Visitor`, (err, results, fields) => {
+            if (err) throw err;
+            res.json(results);
+        })
+    });  
+});
+
+app.get('/getLibrarianInfo', (req, res) => {
+    const {min, max} = req.body;
+    con.connect((err) => {
+        if (err) throw err;
+        con.query(`SELECT * FROM Librarian`, (err, results, fields) => {
+            if (err) throw err;
+            res.json(results);
+        })
+    });  
+});
 
 
+app.post('/accountCreation', (req, res) => {
+    const {user_type, username, password, firstname, lastname, emailAddr, phoneNum} = req.body;
+
+    //console.log(user_type, username, password, firstname, lastname, emailAddr, phoneNum);
+    con.connect((err) => {
+        if (err) throw err;
+        switch(user_type) {
+            case "Visitor":
+                console.log("Account creating in Visitor relation.");
+                con.query(`INSERT INTO Visitor (Visitor_user, Visitor_pass, First_name, Last_name, Email, Phone_num) VALUES ("${username}", "${password}", "${firstname}", "${lastname}", "${emailAddr}", "${phoneNum}")`, (err, result) => {
+                    if (err) {
+                        res.send("<b>" + "An error related to the database have occurred: " + "</b>" + err);
+                    }
+                    else {
+                        res.send("<b>" + "Visitor account has been added. Note that the form is not be cleared on submit, a second input of the same data to the same account schema will result in an error." + "</b>");
+                    }
+                });
+                break;
+            case "Librarian":
+                console.log("Account creating in Librarian relation.");
+                con.query(`INSERT INTO Librarian (Librarian_user, Librarian_pass, First_name, Last_name) VALUES ("${username}", "${password}", "${firstname}", "${lastname}")`, (err, result) => {
+                    if (err) {
+                        res.send("<b>" + "An error related to the database have occurred: " + "</b>" + err);
+                    }
+                    else{
+                        res.send("<b>" + "Librarian account has been added. Note that the form is not be cleared on submit, a second input of the same data to the same account schema will result in an error." + "</b>");
+                    }
+                });
+                break;
+        };
+    })
+});
+
+app.post('/accountDeletion', (req, res) => {
+    const {user_type, value} = req.body;
+    //console.log(user_type, value);
+
+    con.connect((err) => {
+        if (err) throw err;
+        switch(user_type){
+            case "Visitor":
+                console.log("Account deleting in Visitor relation: " + value);
+                con.query(`DELETE FROM Visitor WHERE Visitor_id = ${value}`, (err, result) => {
+                    if (err) {
+                        res.send("<b>" + "An error related to the database have occurred: " + "</b>" + err);
+                    }
+                    else {
+                        res.send("<b>" + "Visitor account deletion request has been processed. Please use the Show Account List to inspect the change." + "</b>");
+                    }
+                });
+                break;
+            case "Librarian":
+                console.log("Account deleting in Librarian relation: " + value);
+                con.query(`DELETE FROM Librarian WHERE Librarian_id = ${value}`, (err, result) => {
+                    if (err) {
+                        res.send("<b>" + "An error related to the database have occurred: " + "</b>" + err);
+                    }
+                    else {
+                        res.send("<b>" + "Librarian account deletion request has been processed. Please use the Show Account List to inspect the change." + "</b>");
+                    }
+                });
+                break;
+        }
+
+    });
+});
+
+app.post('/bookAddition', (req, res) => {
+    const {ISBN, book_name, author, genre, num_pages} = req.body;
+
+    //console.log(ISBN, book_name, author, genre, num_pages);
+    con.connect((err) => {
+        if (err) throw err;
+        con.query(`INSERT INTO Book (ISBN, Book_name, Author, Genre, Num_pages, Count) VALUES ("${ISBN.toString()}", "${book_name}", "${author}", "${genre}", ${num_pages}, ${getRandomInt(1,5)})`, (err, result) => {
+            if (err) {
+                res.send("<b>" + "An error related to the database have occurred: " + "</b>" + err);
+            }
+            else{
+                res.send("<b>" + "Book information has been added to the database. Reminder that this post form does not refresh the page, a second attempt on adding the same book information may result in an error." + "</b>");
+            }
+        });
+    });
+});
+
+app.post('/bookDeletion', (req, res) => {
+    const {value} = req.body;
+    //console.log(value);
+
+    con.connect((err) => {
+        if (err) throw err;
+        console.log("Deleting Book with ISBN value of: " + value);
+        con.query(`DELETE FROM Book WHERE ISBN = ${value}`, (err, result) => {
+            if (err) {
+                res.send("<b>" + "An error related to the database have occurred: " + "</b>" + err);
+            }
+            else {
+                res.send("<b>" + "Book deletion request has been processed. Please use either Show All Book or Search tab to inspect the change." + "</b>");
+            }
+        });
+
+    });
+});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

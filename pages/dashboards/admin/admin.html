@@ -31,7 +31,7 @@
     <div class="tab w3-container w3-mobile">
         <button class="tablinks" id="toggle-show-all">Show All</button>
         <button class="tablinks" id="toggle-search">Search</button>
-        <button class="tablinks" id="toggle-show-accounts">Show Specific Accounts</button>
+        <button class="tablinks" id="toggle-show-accounts">Show Account List</button>
         <button class="tablinks" id="toggle-account-operation">Add/Delete Accounts</button>
         <button class="tablinks" id="toggle-book-operation">Add/Delete Books</button>
     </div>
@@ -60,13 +60,93 @@
     </div>
 
     <div id="show-accounts" class="w3-container w3-mobile">
-        <p>show account here</p>
+        <p>Select the account type (Visitor, Librarian) from the list, and press retrieve.</p>
+        <p>Account information related to that type table will be retrieved and displayed on the bottom.</p>
+        <select id="retrieve_type">
+            <option value="Visitor">Visitor</option>
+            <option value="Librarian">Librarian</option>
+        </select>
+        <button id="submit_retrieve">Retrieve</button>
+        <table id="account-table"></table>
     </div>
     <div id="account-operation" class="w3-container w3-mobile">
-        <p>create account here</p>
+        <p>Select the user type schema (Visitor, Librarian) and input the associated user's account.</p>
+        <p>Username, Password, First and Last name fields cannot be empty.</p>
+        <p>Admin accounts cannot be directly created or deleted here for security reasons.</p>
+        <p id ="output-message-acc-add"></p>
+        <form id = "account-add-form">
+            <p>Select the user type you are creating:</p>
+            <input type="radio" id="visitor" name="user_type" value="Visitor" checked>
+            <label for="visitor">Visitor</label><br>
+            <input type="radio" id="librarian" name="user_type" value="Librarian">
+            <label for="librarian">Librarian</label><br>
+
+            <p>Enter the account information you are creating:</p>
+            <p>Note: Email and Phone Number is optional and only be used with visitor accounts.</p><br>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"><br><br>
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password"><br><br>
+            <label for="fname">First Name:</label>
+            <input type="text" id="fname" name="fname"><br><br>
+            <label for="lname">Last Name:</label>
+            <input type="text" id="lname" name="lname"><br><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email"><br><br>
+            <label for="phone">Phone Number:</label>
+            <input type="number" id="phone" name="phone"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+
+        <br><br>
+        <p>If deleting an account, select the account type table and input the ID value associated to the account you want to delete.</p>
+        <p>The ID associated with the deleted account will not be reused. New accounts created in either of the two account tables will have newer IDs instead of reused IDs.</p>
+        <p>Be aware if the account you want to delete is present in either request (visitor specific) or loaning list (both visitor and librarian), you cannot delete the account information associated with the ID.</p>
+        <p>Note: IDs out of bound/not present in the account table will still process deletion. Please use the Show Account List tab to see which accounts you want to delete.</p>
+        <p id = "output-message-acc-del"></p>
+        <label>Deleting account in:</label>
+        <select id="user-del-type">
+            <option value="Visitor">Visitor</option>
+            <option value="Librarian">Librarian</option>
+        </select>
+        <input type="text" id="ID_delete_val">
+        <button id="acc_submit_delete">Delete Account</button>
+        <br>
+
     </div>
     <div id="book-operation" class="w3-container w3-mobile">
-        <p>create book here</p>
+        <p>Manually add books to the database system by providing its information here. It does not necessarily involve a real, existing book.</p>
+        <p>The book's ISBN-13 number (13 digits, no more or less) and its name are required fields to fill in.</p>
+        <p>All books have an unique ISBN number so make sure the book you are adding to the database doesn't conflict with other ISBN numbers.</p>
+        <p>Information involving Author, Genre, and number of pages can be left unfilled/are optional.</p>
+        <p id ="output-message-book-add"></p>
+        <form id = "book-add-form">
+            <p>Enter the book information you are adding to the book relation table:</p>
+            <p>Note: Check if the book addition is successful by searching its assigned ISBN number.</p>
+            <label for="ISBN_new">ISBN:</label>
+            <input type="number" id="ISBN_new" name="ISBN_new"><br><br>
+            <label for="book_name_new">Book Name:</label>
+            <input type="text" id="book_name_new" name="book_name_new"><br><br>
+            <label for="author">Author:</label>
+            <input type="text" id="author" name="author"><br><br>
+            <label for="genre">Genre:</label>
+            <input type="text" id="genre" name="genre"><br><br>
+            <label for="num_pages">Number of Pages:</label>
+            <input type="number" id="num_pages" name="num_pages"><br><br>
+            <input type="submit" value="Submit">
+        </form>
+
+        <br><br>
+        <p>If deleting a book from the database, input the ISBN value associated to the book you want to delete.</p>
+        <p>ISBN values can be reused if you to re-add the book back to the database.</p>
+        <p>Be aware if the book is expected for request or is loaned out, you cannot delete the book information from the database.</p>
+        <p>Note: ISBN values not present in the account table will still process deletion. Please use the Search tab to pinpoint which books you want to delete.</p>
+        <p id = "output-message-book-del"></p>
+        <label>ISBN of the book to be deleted:</label>
+        <input type="text" id="ISBN_delete_val">
+        <button id="book_submit_delete">Delete Book</button>
+        <br>
+
     </div>
 </body>
 </html>

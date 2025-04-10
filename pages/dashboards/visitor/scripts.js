@@ -116,9 +116,6 @@ $(document).ready( () => {
         let field = $("#search_type").val();
         let value = $("#search_value").val();
 
-        var query = { 'book_search' : field, 'value' : value };
-        console.log(query);
-
         $.ajax({
             url: '/searchSpecific',
             type: 'POST',
@@ -130,9 +127,8 @@ $(document).ready( () => {
 
     $("#request_input").click ( () => {
         let ISBN_req = $("#request_book_ISBN").val();
-        console.log("Hello: " + ISBN_req);
 
-        output = document.getElementById("output-message");
+        let output = document.getElementById("output-message");
 
         $.ajax({
             url: '/sendBookRequest',
